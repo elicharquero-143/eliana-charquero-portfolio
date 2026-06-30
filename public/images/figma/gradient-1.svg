@@ -1,0 +1,28 @@
+<svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 913 837.365" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Gradient 1">
+<g id="Eclipse" filter="url(#filter0_f_0_25)">
+<ellipse cx="432.972" cy="418.682" rx="232.972" ry="218.682" fill="url(#paint0_linear_0_25)"/>
+</g>
+<g id="Planet" filter="url(#filter1_f_0_25)">
+<ellipse cx="605.893" cy="387.397" rx="207.107" ry="186.417" fill="url(#paint1_linear_0_25)"/>
+</g>
+</g>
+<defs>
+<filter id="filter0_f_0_25" x="0" y="0" width="865.943" height="837.365" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="100" result="effect1_foregroundBlur_0_25"/>
+</filter>
+<filter id="filter1_f_0_25" x="298.786" y="100.98" width="614.214" height="572.834" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="50" result="effect1_foregroundBlur_0_25"/>
+</filter>
+<linearGradient id="paint0_linear_0_25" x1="432.972" y1="200" x2="432.972" y2="637.365" gradientUnits="userSpaceOnUse">
+<stop offset="1" stop-color="#C2CCE5" stop-opacity="0.95"/>
+</linearGradient>
+<linearGradient id="paint1_linear_0_25" x1="605.893" y1="200.98" x2="605.893" y2="573.814" gradientUnits="userSpaceOnUse">
+<stop offset="1" stop-color="#E4D1FE" stop-opacity="0.58"/>
+</linearGradient>
+</defs>
+</svg>
