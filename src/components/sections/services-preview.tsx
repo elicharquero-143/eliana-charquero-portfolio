@@ -4,10 +4,18 @@ import Image from "next/image";
 import { Stagger, StaggerItem } from "@/components/motion/reveal";
 import { dictionaries } from "@/i18n/dictionaries";
 import { useLanguage } from "@/i18n/language-provider";
+import type { CmsService } from "@/sanity/lib/home-content";
 
-export function ServicesPreview() {
+type ServicesPreviewProps = {
+  initialServices?: CmsService[];
+};
+
+export function ServicesPreview({ initialServices }: ServicesPreviewProps) {
   const { language } = useLanguage();
-  const servicesPreview = dictionaries[language].services;
+  const servicesPreview =
+    language === "es" && initialServices && initialServices.length > 0
+      ? initialServices
+      : dictionaries[language].services;
 
   return (
     <section className="bg-cream py-14 md:py-[48px]">
@@ -23,7 +31,7 @@ export function ServicesPreview() {
                 aria-hidden
                 className="h-[63px] w-[63px] object-contain"
                 height={63}
-                src={service.icon}
+                src={service.icon ?? "/images/figma/service-branding.png"}
                 width={63}
               />
               <h2 className="mt-8 max-w-[240px] text-pretty font-sans text-[30px] font-bold leading-[38px] text-ink">

@@ -2,41 +2,41 @@ import { defineField, defineType } from "sanity";
 
 export const testimonial = defineType({
   name: "testimonial",
-  title: "Testimonial",
+  title: "Testimonio / Cliente",
   type: "document",
   fields: [
     defineField({
       name: "quote",
-      title: "Quote",
+      title: "Testimonio",
       type: "text",
       rows: 4,
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "name",
-      title: "Name",
+      title: "Nombre",
       type: "string",
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "role",
-      title: "Role",
+      title: "Rol",
       type: "string",
     }),
     defineField({
       name: "company",
-      title: "Company",
+      title: "Empresa",
       type: "string",
     }),
     defineField({
       name: "avatar",
-      title: "Avatar",
+      title: "Foto",
       type: "image",
       options: { hotspot: true },
     }),
     defineField({
       name: "rating",
-      title: "Rating",
+      title: "Puntaje",
       type: "number",
       initialValue: 5,
     }),

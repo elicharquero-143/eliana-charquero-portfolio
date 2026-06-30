@@ -2,12 +2,12 @@ import { defineField, defineType } from "sanity";
 
 export const category = defineType({
   name: "category",
-  title: "Project Category",
+  title: "Categoría de trabajos",
   type: "document",
   fields: [
     defineField({
       name: "title",
-      title: "Title",
+      title: "Título",
       type: "string",
       validation: (Rule) => Rule.required(),
     }),
@@ -20,18 +20,18 @@ export const category = defineType({
     }),
     defineField({
       name: "description",
-      title: "Description",
+      title: "Descripción",
       type: "text",
       rows: 3,
     }),
     defineField({
       name: "order",
-      title: "Order",
+      title: "Orden",
       type: "number",
     }),
     defineField({
       name: "coverImage",
-      title: "Cover Image",
+      title: "Imagen de portada",
       type: "image",
       options: { hotspot: true },
     }),

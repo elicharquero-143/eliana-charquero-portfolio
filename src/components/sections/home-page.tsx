@@ -5,20 +5,27 @@ import { FeaturedProjects } from "@/components/sections/featured-projects";
 import { HomeHero } from "@/components/sections/home-hero";
 import { ServicesPreview } from "@/components/sections/services-preview";
 import { TestimonialsSection } from "@/components/sections/testimonials-section";
+import type { CmsService, CmsTestimonial } from "@/sanity/lib/home-content";
 import type { Project } from "@/types/project";
 
 type HomePageProps = {
   featuredProjects?: Project[];
+  services?: CmsService[];
+  testimonials?: CmsTestimonial[];
 };
 
-export function HomePage({ featuredProjects }: HomePageProps) {
+export function HomePage({
+  featuredProjects,
+  services,
+  testimonials,
+}: HomePageProps) {
   return (
     <main className="min-h-screen overflow-hidden bg-cream">
       <SiteHeader />
       <HomeHero />
-      <ServicesPreview />
+      <ServicesPreview initialServices={services} />
       <FeaturedProjects initialProjects={featuredProjects} />
-      <TestimonialsSection />
+      <TestimonialsSection initialTestimonials={testimonials} />
       <ContactSection />
       <SiteFooter />
     </main>

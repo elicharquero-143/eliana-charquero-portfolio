@@ -1,8 +1,19 @@
 import { HomePage } from "@/components/sections/home-page";
+import { getServices, getTestimonials } from "@/sanity/lib/home-content";
 import { getFeaturedProjects } from "@/sanity/lib/projects";
 
 export default async function Page() {
-  const featuredProjects = await getFeaturedProjects();
+  const [featuredProjects, services, testimonials] = await Promise.all([
+    getFeaturedProjects(),
+    getServices(),
+    getTestimonials(),
+  ]);
 
-  return <HomePage featuredProjects={featuredProjects} />;
+  return (
+    <HomePage
+      featuredProjects={featuredProjects}
+      services={services}
+      testimonials={testimonials}
+    />
+  );
 }

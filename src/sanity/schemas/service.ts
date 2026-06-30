@@ -2,12 +2,12 @@ import { defineField, defineType } from "sanity";
 
 export const service = defineType({
   name: "service",
-  title: "Service",
+  title: "Servicio",
   type: "document",
   fields: [
     defineField({
       name: "title",
-      title: "Title",
+      title: "Título",
       type: "string",
       validation: (Rule) => Rule.required(),
     }),
@@ -20,23 +20,23 @@ export const service = defineType({
     }),
     defineField({
       name: "description",
-      title: "Description",
+      title: "Descripción",
       type: "text",
       rows: 4,
     }),
     defineField({
       name: "icon",
-      title: "Icon",
+      title: "Ícono",
       type: "image",
     }),
     defineField({
       name: "order",
-      title: "Order",
+      title: "Orden",
       type: "number",
     }),
     defineField({
       name: "relatedWizardAnswers",
-      title: "Related Wizard Answers",
+      title: "Respuestas relacionadas del formulario guiado",
       type: "array",
       of: [{ type: "string" }],
     }),

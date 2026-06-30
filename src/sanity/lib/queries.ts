@@ -69,3 +69,25 @@ export const categoryBySlugQuery = groq`
     }
   }
 `;
+
+export const servicesQuery = groq`
+  *[_type == "service"] | order(order asc) {
+    title,
+    "slug": slug.current,
+    description,
+    "icon": icon.asset->url,
+    order,
+    relatedWizardAnswers
+  }
+`;
+
+export const testimonialsQuery = groq`
+  *[_type == "testimonial"] | order(_createdAt asc) {
+    quote,
+    name,
+    role,
+    company,
+    "avatar": avatar.asset->url,
+    rating
+  }
+`;

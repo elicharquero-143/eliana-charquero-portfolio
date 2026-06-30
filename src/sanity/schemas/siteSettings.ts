@@ -2,23 +2,23 @@ import { defineField, defineType } from "sanity";
 
 export const siteSettings = defineType({
   name: "siteSettings",
-  title: "Site Settings",
+  title: "Ajustes generales",
   type: "document",
   fields: [
     defineField({
       name: "siteTitle",
-      title: "Site Title",
+      title: "Título del sitio",
       type: "string",
     }),
     defineField({
       name: "siteDescription",
-      title: "Site Description",
+      title: "Descripción del sitio",
       type: "text",
       rows: 3,
     }),
     defineField({
       name: "navigation",
-      title: "Navigation",
+      title: "Navegación",
       type: "array",
       of: [
         {
@@ -32,7 +32,7 @@ export const siteSettings = defineType({
     }),
     defineField({
       name: "socialLinks",
-      title: "Social Links",
+      title: "Redes y links",
       type: "array",
       of: [
         {
@@ -46,12 +46,12 @@ export const siteSettings = defineType({
     }),
     defineField({
       name: "footerText",
-      title: "Footer Text",
+      title: "Texto del pie de página",
       type: "string",
     }),
     defineField({
       name: "defaultSeoImage",
-      title: "Default SEO Image",
+      title: "Imagen SEO por defecto",
       type: "image",
       options: { hotspot: true },
     }),

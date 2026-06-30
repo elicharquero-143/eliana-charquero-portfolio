@@ -2,12 +2,12 @@ import { defineField, defineType } from "sanity";
 
 export const project = defineType({
   name: "project",
-  title: "Project",
+  title: "Trabajo / Proyecto",
   type: "document",
   fields: [
     defineField({
       name: "title",
-      title: "Title",
+      title: "Título",
       type: "string",
       validation: (Rule) => Rule.required(),
     }),
@@ -20,63 +20,63 @@ export const project = defineType({
     }),
     defineField({
       name: "category",
-      title: "Category",
+      title: "Categoría",
       type: "reference",
       to: [{ type: "category" }],
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "year",
-      title: "Year",
+      title: "Año",
       type: "string",
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "description",
-      title: "Description",
+      title: "Descripción",
       type: "text",
       rows: 5,
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "role",
-      title: "Role",
+      title: "Rol",
       type: "string",
     }),
     defineField({
       name: "services",
-      title: "Services",
+      title: "Servicios",
       type: "array",
       of: [{ type: "string" }],
     }),
     defineField({
       name: "tools",
-      title: "Tools",
+      title: "Herramientas",
       type: "array",
       of: [{ type: "string" }],
     }),
     defineField({
       name: "coverImage",
-      title: "Cover Image",
+      title: "Imagen de portada",
       type: "image",
       options: { hotspot: true },
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "heroImage",
-      title: "Hero Image",
+      title: "Imagen principal",
       type: "image",
       options: { hotspot: true },
     }),
     defineField({
       name: "gallery",
-      title: "Gallery",
+      title: "Galería de imágenes",
       type: "array",
       of: [{ type: "image", options: { hotspot: true } }],
     }),
     defineField({
       name: "externalLinks",
-      title: "External Links",
+      title: "Links externos",
       type: "array",
       of: [
         {
@@ -90,18 +90,18 @@ export const project = defineType({
     }),
     defineField({
       name: "featured",
-      title: "Featured",
+      title: "Destacado",
       type: "boolean",
       initialValue: false,
     }),
     defineField({
       name: "seoTitle",
-      title: "SEO Title",
+      title: "Título SEO",
       type: "string",
     }),
     defineField({
       name: "seoDescription",
-      title: "SEO Description",
+      title: "Descripción SEO",
       type: "text",
       rows: 3,
     }),

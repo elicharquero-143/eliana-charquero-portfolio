@@ -2,52 +2,52 @@ import { defineField, defineType } from "sanity";
 
 export const homePage = defineType({
   name: "homePage",
-  title: "Home Page",
+  title: "Página de inicio",
   type: "document",
   fields: [
     defineField({
       name: "heroTitle",
-      title: "Hero Title",
+      title: "Título principal",
       type: "string",
     }),
     defineField({
       name: "introTitle",
-      title: "Intro Title",
+      title: "Título de introducción",
       type: "string",
     }),
     defineField({
       name: "introBody",
-      title: "Intro Body",
+      title: "Texto de introducción",
       type: "text",
       rows: 4,
     }),
     defineField({
       name: "heroImage",
-      title: "Hero Image",
+      title: "Imagen principal",
       type: "image",
       options: { hotspot: true },
     }),
     defineField({
       name: "featuredProjects",
-      title: "Featured Projects",
+      title: "Trabajos destacados",
       type: "array",
       of: [{ type: "reference", to: [{ type: "project" }] }],
     }),
     defineField({
       name: "servicesPreview",
-      title: "Services Preview",
+      title: "Servicios visibles",
       type: "array",
       of: [{ type: "reference", to: [{ type: "service" }] }],
     }),
     defineField({
       name: "testimonials",
-      title: "Testimonials",
+      title: "Testimonios / Clientes",
       type: "array",
       of: [{ type: "reference", to: [{ type: "testimonial" }] }],
     }),
     defineField({
       name: "contactTitle",
-      title: "Contact Title",
+      title: "Título de contacto",
       type: "string",
     }),
   ],
