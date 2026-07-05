@@ -49,9 +49,7 @@ export function ProjectDetailPage({ initialProject, slug }: ProjectDetailPagePro
   }
 
   const heroImage = project.heroImage ?? project.coverImage;
-  const galleryImages = [heroImage, ...project.gallery, project.coverImage].filter(
-    (image, index, list) => list.indexOf(image) === index,
-  );
+  const galleryImages = project.gallery.length > 0 ? project.gallery : [];
   const detailTags = [
     project.role,
     project.category.title,
@@ -115,31 +113,33 @@ export function ProjectDetailPage({ initialProject, slug }: ProjectDetailPagePro
         </div>
       </section>
 
-      <section className="bg-cream px-5 py-16 md:px-[68px] md:py-[96px]">
-        <div className="home-scale">
-          <Reveal>
-            <h2 className="font-sans text-[30px] font-bold leading-[38px] text-ink">
-              {content.galleryTitle}
-            </h2>
-          </Reveal>
-          <Stagger className="mt-8 grid gap-5 md:grid-cols-2">
-            {galleryImages.map((image, index) => (
-              <StaggerItem
-                className="relative aspect-[1.35] overflow-hidden rounded-xl bg-white"
-                key={`${image}-${index}`}
-              >
-                <Image
-                  alt={`${project.title} ${index + 1}`}
-                className="h-full w-full object-contain"
-                  fill
-                  sizes="(min-width: 768px) 50vw, 100vw"
-                  src={image}
-                />
-              </StaggerItem>
-            ))}
-          </Stagger>
-        </div>
-      </section>
+      {galleryImages.length > 0 ? (
+        <section className="bg-cream px-5 py-16 md:px-[68px] md:py-[96px]">
+          <div className="home-scale">
+            <Reveal>
+              <h2 className="font-sans text-[30px] font-bold leading-[38px] text-ink">
+                {content.galleryTitle}
+              </h2>
+            </Reveal>
+            <Stagger className="mt-8 grid gap-5 md:grid-cols-2">
+              {galleryImages.map((image, index) => (
+                <StaggerItem
+                  className="relative aspect-[1.35] overflow-hidden rounded-xl bg-white"
+                  key={`${image}-${index}`}
+                >
+                  <Image
+                    alt={`${project.title} ${index + 1}`}
+                    className="h-full w-full object-contain"
+                    fill
+                    sizes="(min-width: 768px) 50vw, 100vw"
+                    src={image}
+                  />
+                </StaggerItem>
+              ))}
+            </Stagger>
+          </div>
+        </section>
+      ) : null}
       <SiteFooter />
     </main>
   );

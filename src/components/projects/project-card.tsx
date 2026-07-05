@@ -61,16 +61,6 @@ function ProjectImage({ ctaLabel = "Ver proyecto", project, variant }: ProjectIm
         sizes={variant === "carousel" ? "680px" : "326px"}
         src={project.coverImage}
       />
-      {project.gallery[0] ? (
-        <Image
-          alt=""
-          aria-hidden
-          className="absolute inset-0 h-full w-full object-cover"
-          fill
-          sizes="326px"
-          src={project.gallery[0]}
-        />
-      ) : null}
       {variant === "grid" ? (
         <>
           <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-ink/10 to-transparent opacity-85 transition-opacity duration-300 group-hover:opacity-95" />
