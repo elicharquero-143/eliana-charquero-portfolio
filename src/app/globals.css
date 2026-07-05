@@ -61,6 +61,14 @@ img {
   font-weight: 400;
 }
 
+.home-hero-title {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(3rem, 12.4vw, 6.125rem);
+  line-height: 0.95;
+  letter-spacing: 0.01em;
+  font-weight: 400;
+}
+
 .section-heading {
   font-family: var(--font-accent), Arial, sans-serif;
   font-size: clamp(2rem, 2.8vw, 2.5rem);

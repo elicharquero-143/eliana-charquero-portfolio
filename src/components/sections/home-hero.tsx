@@ -42,7 +42,7 @@ export function HomeHero() {
         <div className="relative z-10 px-5 pt-14 md:w-[1038px] md:px-16 md:pt-20">
           <AnimatedTitle
             ariaLabel="ELIANA CHARQUERO"
-            className="display-title max-w-[680px] text-ink"
+            className="home-hero-title max-w-[680px] text-ink"
             lines={["ELIANA", "CHARQUERO"]}
           />
         </div>

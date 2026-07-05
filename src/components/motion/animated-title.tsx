@@ -16,7 +16,7 @@ export function AnimatedTitle({ ariaLabel, className, lines }: AnimatedTitleProp
   return (
     <h1 aria-label={ariaLabel} className={cn("overflow-hidden", className)}>
       {lines.map((line) => (
-        <span aria-hidden className="block overflow-hidden" key={line}>
+        <span aria-hidden className="block overflow-hidden whitespace-nowrap" key={line}>
           {Array.from(line).map((character) => {
             const index = characterIndex;
             characterIndex += 1;

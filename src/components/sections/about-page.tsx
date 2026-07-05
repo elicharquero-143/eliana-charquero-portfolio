@@ -21,7 +21,7 @@ export function AboutPage() {
     <main className="min-h-screen overflow-hidden bg-cream">
       <SiteHeader />
       <section className="relative bg-cream">
-        <div className="home-scale relative min-h-[787px] px-6 pb-24 pt-28 md:px-[138px] md:pb-[180px] md:pt-[220px]">
+        <div className="home-scale relative px-6 pb-14 pt-20 md:min-h-[787px] md:px-[138px] md:pb-[180px] md:pt-[220px]">
           <div className="pointer-events-none absolute right-0 top-6 h-[660px] w-[72%] max-w-[760px] md:right-[58px] md:top-[30px]">
             <Image
               alt=""
