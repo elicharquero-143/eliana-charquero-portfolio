@@ -26,7 +26,7 @@ export function ProjectsPage({ initialProjects }: ProjectsPageProps) {
   return (
     <main className="min-h-screen overflow-hidden bg-cream">
       <SiteHeader />
-      <section className="relative bg-cream px-6 pb-16 pt-24 md:px-[68px] md:pb-20 md:pt-[118px]">
+      <section className="relative bg-cream px-5 pb-14 pt-20 md:px-[68px] md:pb-20 md:pt-[118px]">
         <Image
           alt=""
           aria-hidden
@@ -42,7 +42,7 @@ export function ProjectsPage({ initialProjects }: ProjectsPageProps) {
                 <p className="font-sans text-lg leading-7 text-muted">
                   {content.eyebrow}
                 </p>
-                <h1 className="mt-3 font-serif text-[76px] font-normal leading-[0.9] text-ink md:text-[128px]">
+                <h1 className="mt-3 font-serif text-[56px] font-normal leading-[0.92] text-ink sm:text-[76px] md:text-[128px]">
                   {content.title}
                 </h1>
               </Reveal>
@@ -58,10 +58,10 @@ export function ProjectsPage({ initialProjects }: ProjectsPageProps) {
             </Reveal>
           </div>
 
-          <Stagger className="mt-12 flex snap-x gap-4 overflow-x-auto pb-8 [scrollbar-width:thin] md:gap-6">
+          <Stagger className="mt-10 flex snap-x gap-4 overflow-x-auto pb-8 [scrollbar-width:thin] md:mt-12 md:gap-6">
             {projects.map((project) => (
               <StaggerItem
-                className="min-w-[82vw] snap-start sm:min-w-[560px] lg:min-w-[680px]"
+                className="min-w-[84vw] snap-start sm:min-w-[560px] lg:min-w-[680px]"
                 key={project.slug}
               >
                 <ProjectCard

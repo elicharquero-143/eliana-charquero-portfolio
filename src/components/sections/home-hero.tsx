@@ -17,7 +17,7 @@ export function HomeHero() {
 
   return (
     <section className="relative bg-cream">
-      <div className="home-scale relative min-h-[1066px] pb-16 md:min-h-[1166px]">
+      <div className="home-scale relative pb-14 md:min-h-[1166px] md:pb-16">
         <div className="pointer-events-none absolute left-[6%] top-14 z-0 h-[420px] w-[78%] max-w-[720px] md:left-[68px] md:top-[62px]">
           <Image
             alt=""
@@ -39,7 +39,7 @@ export function HomeHero() {
           />
         </div>
 
-        <div className="relative z-10 px-6 pt-20 md:w-[1038px] md:px-16">
+        <div className="relative z-10 px-5 pt-14 md:w-[1038px] md:px-16 md:pt-20">
           <AnimatedTitle
             ariaLabel="ELIANA CHARQUERO"
             className="display-title max-w-[680px] text-ink"
@@ -47,7 +47,7 @@ export function HomeHero() {
           />
         </div>
 
-        <div className="relative z-10 grid min-h-[722px] grid-cols-1 items-center gap-12 px-6 pt-12 md:grid-cols-2 md:px-16 md:pt-0">
+        <div className="relative z-10 grid grid-cols-1 items-center gap-10 px-5 pt-10 md:min-h-[722px] md:grid-cols-2 md:gap-12 md:px-16 md:pt-0">
           <MotionImageBlock className="relative flex justify-center md:justify-start md:pl-0">
             <DecorativeImage
               className="spin-slow absolute -left-5 -top-10 z-10 h-auto w-[112px] md:-left-14 md:-top-12 md:w-[176px]"
@@ -70,10 +70,10 @@ export function HomeHero() {
 
           <Reveal className="max-w-[622px] md:pt-16" delay={0.12}>
             <div className="max-w-[509px] text-ink">
-              <p className="font-sans text-[30px] font-bold leading-[38px]">
+              <p className="font-sans text-2xl font-bold leading-8 md:text-[30px] md:leading-[38px]">
                 {dictionary.home.introTitle}
               </p>
-              <p className="mt-6 font-sans text-2xl font-medium leading-[26px]">
+              <p className="mt-5 font-sans text-xl font-medium leading-7 md:mt-6 md:text-2xl md:leading-[26px]">
                 {dictionary.home.introBody}
               </p>
             </div>

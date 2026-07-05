@@ -54,6 +54,12 @@ export const projectBySlugQuery = groq`
   }
 `;
 
+export const projectSlugsQuery = groq`
+  *[_type == "project" && defined(slug.current)] {
+    "slug": slug.current
+  }
+`;
+
 export const categoryBySlugQuery = groq`
   *[_type == "category" && slug.current == $slug][0] {
     title,

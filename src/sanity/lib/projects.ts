@@ -4,10 +4,14 @@ import {
   allProjectsQuery,
   featuredProjectsQuery,
   projectBySlugQuery,
+  projectSlugsQuery,
 } from "@/sanity/lib/queries";
 import type { Project } from "@/types/project";
 
 const fallbackProjects = dictionaries.es.projects as readonly Project[];
+const sanityFetchOptions = {
+  next: { revalidate: 60 },
+} as const;
 
 function hasSanityConfig() {
   return Boolean(process.env.NEXT_PUBLIC_SANITY_PROJECT_ID);
@@ -30,7 +34,11 @@ async function fetchSanityProjects(query: string): Promise<Project[]> {
   }
 
   try {
-    const projects = await sanityClient.fetch<Project[]>(query);
+    const projects = await sanityClient.fetch<Project[]>(
+      query,
+      {},
+      sanityFetchOptions,
+    );
 
     return projects
       .filter((project) => project?.title && project?.slug && project?.coverImage)
@@ -57,9 +65,11 @@ export async function getFeaturedProjects() {
 export async function getProjectBySlug(slug: string) {
   if (hasSanityConfig()) {
     try {
-      const project = await sanityClient.fetch<Project | null>(projectBySlugQuery, {
-        slug,
-      });
+      const project = await sanityClient.fetch<Project | null>(
+        projectBySlugQuery,
+        { slug },
+        sanityFetchOptions,
+      );
 
       if (project?.title && project.slug && project.coverImage) {
         return normalizeProject(project);
@@ -70,4 +80,24 @@ export async function getProjectBySlug(slug: string) {
   }
 
   return fallbackProjects.find((project) => project.slug === slug) ?? null;
+}
+
+export async function getProjectSlugs() {
+  if (hasSanityConfig()) {
+    try {
+      const projects = await sanityClient.fetch<Array<{ slug: string }>>(
+        projectSlugsQuery,
+        {},
+        sanityFetchOptions,
+      );
+
+      if (projects.length > 0) {
+        return projects.filter((project) => project.slug);
+      }
+    } catch {
+      return fallbackProjects.map((project) => ({ slug: project.slug }));
+    }
+  }
+
+  return fallbackProjects.map((project) => ({ slug: project.slug }));
 }

@@ -47,7 +47,7 @@ function ProjectImage({ ctaLabel = "Ver proyecto", project, variant }: ProjectIm
     <div
       className={cn(
         "relative overflow-hidden rounded-xl bg-white",
-        variant === "carousel" ? "aspect-[1.45]" : "aspect-square",
+        variant === "carousel" ? "aspect-[0.92] sm:aspect-[1.45]" : "aspect-square",
       )}
     >
       <Image
@@ -107,7 +107,7 @@ function ProjectCaption({ project, variant }: ProjectCaptionProps) {
         className={cn(
           "font-sans font-medium text-ink",
           variant === "carousel"
-            ? "text-3xl font-bold uppercase leading-9"
+            ? "text-2xl font-bold uppercase leading-8 sm:text-3xl sm:leading-9"
             : "text-2xl leading-[26px]",
         )}
       >
@@ -117,7 +117,7 @@ function ProjectCaption({ project, variant }: ProjectCaptionProps) {
         className={cn(
           "mt-1 font-sans text-muted",
           variant === "carousel"
-            ? "text-base font-bold uppercase tracking-[0.08em] leading-6"
+            ? "text-sm font-bold uppercase tracking-[0.08em] leading-5 sm:text-base sm:leading-6"
             : "text-lg leading-7",
         )}
       >

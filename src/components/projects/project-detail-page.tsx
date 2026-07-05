@@ -62,12 +62,12 @@ export function ProjectDetailPage({ initialProject, slug }: ProjectDetailPagePro
   return (
     <main className="min-h-screen overflow-hidden bg-cream">
       <SiteHeader />
-      <section className="bg-periwinkle px-6 py-20 md:px-[68px] md:py-[96px]">
-        <div className="home-scale grid gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(420px,0.95fr)] lg:items-start">
-          <MotionImageBlock className="relative aspect-[1.28] overflow-hidden rounded-xl bg-ink">
+      <section className="bg-periwinkle px-5 py-16 md:px-[68px] md:py-[96px]">
+        <div className="home-scale grid gap-8 md:gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(420px,0.95fr)] lg:items-start">
+          <MotionImageBlock className="relative aspect-[1.28] overflow-hidden rounded-xl bg-cream/40">
             <Image
               alt={project.title}
-              className="h-full w-full object-cover"
+              className="h-full w-full object-contain"
               fill
               priority
               sizes="(min-width: 1024px) 52vw, 100vw"
@@ -93,7 +93,7 @@ export function ProjectDetailPage({ initialProject, slug }: ProjectDetailPagePro
               ))}
             </div>
 
-            <h1 className="mt-8 font-serif text-[64px] font-normal leading-[0.95] text-ink md:text-[88px]">
+            <h1 className="mt-8 font-serif text-[52px] font-normal leading-[0.95] text-ink sm:text-[64px] md:text-[88px]">
               {project.title}
             </h1>
 
@@ -115,7 +115,7 @@ export function ProjectDetailPage({ initialProject, slug }: ProjectDetailPagePro
         </div>
       </section>
 
-      <section className="bg-cream px-6 py-20 md:px-[68px] md:py-[96px]">
+      <section className="bg-cream px-5 py-16 md:px-[68px] md:py-[96px]">
         <div className="home-scale">
           <Reveal>
             <h2 className="font-sans text-[30px] font-bold leading-[38px] text-ink">
@@ -130,7 +130,7 @@ export function ProjectDetailPage({ initialProject, slug }: ProjectDetailPagePro
               >
                 <Image
                   alt={`${project.title} ${index + 1}`}
-                  className="h-full w-full object-cover"
+                className="h-full w-full object-contain"
                   fill
                   sizes="(min-width: 768px) 50vw, 100vw"
                   src={image}

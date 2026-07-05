@@ -17,15 +17,15 @@ export function SiteHeader() {
   const dictionary = dictionaries[language];
 
   return (
-    <header className="sticky top-0 z-50 h-[100px] border-b border-black/5 bg-cream/94 shadow-hairline backdrop-blur-md">
-      <div className="home-scale flex h-full items-center justify-between px-6 md:px-16">
+    <header className="sticky top-0 z-50 min-h-[76px] border-b border-black/5 bg-cream/94 py-3 shadow-hairline backdrop-blur-md md:h-[100px] md:py-0">
+      <div className="home-scale flex h-full flex-col items-center justify-center gap-2 px-4 sm:flex-row sm:justify-between md:px-16">
         <nav
           aria-label="Principal"
-          className="flex items-center gap-4 md:gap-10"
+          className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 md:gap-x-10"
         >
           {navItems.map((item) => (
             <Link
-              className="font-sans text-sm leading-7 text-muted transition-colors hover:text-ink md:text-lg"
+              className="font-sans text-[13px] leading-6 text-muted transition-colors hover:text-ink md:text-lg md:leading-7"
               href={item.href}
               key={item.href}
             >
@@ -35,13 +35,13 @@ export function SiteHeader() {
         </nav>
         <div
           aria-label={dictionary.nav.languageLabel}
-          className="flex items-center gap-3"
+          className="flex shrink-0 items-center gap-3"
           role="group"
         >
           {(["en", "es"] as const).map((item) => (
             <button
               aria-pressed={language === item}
-              className="font-sans text-sm leading-7 text-muted transition-colors hover:text-ink aria-pressed:text-ink aria-pressed:underline md:text-lg"
+              className="font-sans text-[13px] leading-6 text-muted transition-colors hover:text-ink aria-pressed:text-ink aria-pressed:underline md:text-lg md:leading-7"
               key={item}
               onClick={() => setLanguage(item as Language)}
               type="button"

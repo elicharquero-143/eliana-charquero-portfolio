@@ -24,10 +24,18 @@ function hasSanityConfig() {
   return Boolean(process.env.NEXT_PUBLIC_SANITY_PROJECT_ID);
 }
 
+const sanityFetchOptions = {
+  next: { revalidate: 60 },
+} as const;
+
 export async function getServices() {
   if (hasSanityConfig()) {
     try {
-      const services = await sanityClient.fetch<CmsService[]>(servicesQuery);
+      const services = await sanityClient.fetch<CmsService[]>(
+        servicesQuery,
+        {},
+        sanityFetchOptions,
+      );
 
       if (services.length > 0) {
         return services.filter((service) => service.title && service.slug);
@@ -44,7 +52,11 @@ export async function getTestimonials() {
   if (hasSanityConfig()) {
     try {
       const testimonials =
-        await sanityClient.fetch<CmsTestimonial[]>(testimonialsQuery);
+        await sanityClient.fetch<CmsTestimonial[]>(
+          testimonialsQuery,
+          {},
+          sanityFetchOptions,
+        );
 
       if (testimonials.length > 0) {
         return testimonials.filter(

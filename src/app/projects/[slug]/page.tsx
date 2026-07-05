@@ -1,6 +1,5 @@
 import { ProjectDetailPage } from "@/components/projects/project-detail-page";
-import { dictionaries } from "@/i18n/dictionaries";
-import { getProjectBySlug } from "@/sanity/lib/projects";
+import { getProjectBySlug, getProjectSlugs } from "@/sanity/lib/projects";
 
 type ProjectSlugPageProps = {
   params: Promise<{
@@ -8,10 +7,11 @@ type ProjectSlugPageProps = {
   }>;
 };
 
-export function generateStaticParams() {
-  return dictionaries.es.projects.map((project) => ({
-    slug: project.slug,
-  }));
+export const dynamicParams = true;
+export const revalidate = 60;
+
+export async function generateStaticParams() {
+  return getProjectSlugs();
 }
 
 export default async function ProjectSlugPage({ params }: ProjectSlugPageProps) {
