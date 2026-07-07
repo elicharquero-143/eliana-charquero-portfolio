@@ -56,6 +56,8 @@ export function ProjectDetailPage({ initialProject, slug }: ProjectDetailPagePro
     project.year,
     ...project.tools,
   ].filter((item, index, list) => item && list.indexOf(item) === index);
+  const externalLinks =
+    project.externalLinks?.filter((link) => link.href && link.label) ?? [];
 
   return (
     <main className="min-h-screen overflow-hidden bg-cream">
@@ -81,14 +83,6 @@ export function ProjectDetailPage({ initialProject, slug }: ProjectDetailPagePro
                   {content.backToProjects}
                 </Link>
               </Button>
-              {project.externalLinks?.map((link) => (
-                <Button asChild className="h-12" key={link.href} variant="secondary">
-                  <a href={link.href} rel="noreferrer" target="_blank">
-                    {link.label}
-                    <ExternalLink aria-hidden className="ml-2 size-4" />
-                  </a>
-                </Button>
-              ))}
             </div>
 
             <h1 className="mt-8 font-serif text-[52px] font-normal leading-[0.95] text-ink sm:text-[64px] md:text-[88px]">
@@ -109,6 +103,24 @@ export function ProjectDetailPage({ initialProject, slug }: ProjectDetailPagePro
             <p className="mt-8 max-w-[760px] text-pretty font-sans text-lg leading-8 text-ink">
               {project.description}
             </p>
+
+            {externalLinks.length > 0 ? (
+              <div className="mt-8 flex flex-wrap gap-3">
+                {externalLinks.map((link) => (
+                  <Button
+                    asChild
+                    className="h-12"
+                    key={`${link.label}-${link.href}`}
+                    variant="secondary"
+                  >
+                    <a href={link.href} rel="noreferrer" target="_blank">
+                      {link.label}
+                      <ExternalLink aria-hidden className="ml-2 size-4" />
+                    </a>
+                  </Button>
+                ))}
+              </div>
+            ) : null}
           </Reveal>
         </div>
       </section>

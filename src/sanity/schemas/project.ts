@@ -76,14 +76,14 @@ export const project = defineType({
     }),
     defineField({
       name: "externalLinks",
-      title: "Links externos",
+      title: "Botones externos / prototipos",
       type: "array",
       of: [
         {
           type: "object",
           fields: [
-            { name: "label", title: "Label", type: "string" },
-            { name: "href", title: "URL", type: "url" },
+            { name: "label", title: "Texto del botón", type: "string" },
+            { name: "href", title: "Link", type: "url" },
           ],
         },
       ],
