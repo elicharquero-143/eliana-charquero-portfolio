@@ -9,6 +9,7 @@ import { MotionImageBlock, Reveal, Stagger, StaggerItem } from "@/components/mot
 import { Button } from "@/components/ui/button";
 import { dictionaries } from "@/i18n/dictionaries";
 import { useLanguage } from "@/i18n/language-provider";
+import { localizeProject } from "@/lib/project-localization";
 import { routes } from "@/lib/routes";
 import type { Project } from "@/types/project";
 
@@ -23,7 +24,8 @@ export function ProjectDetailPage({ initialProject, slug }: ProjectDetailPagePro
   const content = dictionary.projectPage;
   const projects = dictionary.projects as readonly Project[];
   const projectIndex = projects.findIndex((item) => item.slug === slug);
-  const project = initialProject ?? projects[projectIndex];
+  const sourceProject = initialProject ?? projects[projectIndex];
+  const project = sourceProject ? localizeProject(sourceProject, language) : null;
 
   if (!project) {
     return (

@@ -8,6 +8,7 @@ import { Reveal, Stagger, StaggerItem } from "@/components/motion/reveal";
 import { ProjectCard } from "@/components/projects/project-card";
 import { dictionaries } from "@/i18n/dictionaries";
 import { useLanguage } from "@/i18n/language-provider";
+import { localizeProjects } from "@/lib/project-localization";
 import type { Project } from "@/types/project";
 
 type ProjectsPageProps = {
@@ -22,6 +23,7 @@ export function ProjectsPage({ initialProjects }: ProjectsPageProps) {
     initialProjects && initialProjects.length > 0
       ? initialProjects
       : (dictionary.projects as readonly Project[]);
+  const localizedProjects = localizeProjects(projects, language);
 
   return (
     <main className="min-h-screen overflow-hidden bg-cream">
@@ -59,7 +61,7 @@ export function ProjectsPage({ initialProjects }: ProjectsPageProps) {
           </div>
 
           <Stagger className="mt-10 flex snap-x gap-4 overflow-x-auto pb-8 [scrollbar-width:thin] md:mt-12 md:gap-6">
-            {projects.map((project) => (
+            {localizedProjects.map((project) => (
               <StaggerItem
                 className="min-w-[84vw] snap-start sm:min-w-[560px] lg:min-w-[680px]"
                 key={project.slug}

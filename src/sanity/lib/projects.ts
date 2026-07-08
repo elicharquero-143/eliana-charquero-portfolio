@@ -21,6 +21,7 @@ function normalizeProject(project: Project): Project {
   return {
     ...project,
     services: project.services ?? [],
+    servicesEn: project.servicesEn ?? [],
     tools: project.tools ?? [],
     gallery: project.gallery ?? [],
     externalLinks: project.externalLinks ?? [],

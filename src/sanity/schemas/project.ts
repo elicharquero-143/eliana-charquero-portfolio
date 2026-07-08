@@ -12,6 +12,12 @@ export const project = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: "titleEn",
+      title: "Título en inglés",
+      type: "string",
+      description: "Opcional. Si está vacío, la web usará el título en español.",
+    }),
+    defineField({
       name: "slug",
       title: "Slug",
       type: "slug",
@@ -39,8 +45,21 @@ export const project = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: "descriptionEn",
+      title: "Descripción en inglés",
+      type: "text",
+      rows: 5,
+      description:
+        "Opcional. Si está vacío, la web usará la descripción en español.",
+    }),
+    defineField({
       name: "role",
       title: "Rol",
+      type: "string",
+    }),
+    defineField({
+      name: "roleEn",
+      title: "Rol en inglés",
       type: "string",
     }),
     defineField({
@@ -48,6 +67,13 @@ export const project = defineType({
       title: "Servicios",
       type: "array",
       of: [{ type: "string" }],
+    }),
+    defineField({
+      name: "servicesEn",
+      title: "Servicios en inglés",
+      type: "array",
+      of: [{ type: "string" }],
+      description: "Opcional. Mantén el mismo orden que en Servicios.",
     }),
     defineField({
       name: "tools",
@@ -83,6 +109,11 @@ export const project = defineType({
           type: "object",
           fields: [
             { name: "label", title: "Texto del botón", type: "string" },
+            {
+              name: "labelEn",
+              title: "Texto del botón en inglés",
+              type: "string",
+            },
             { name: "href", title: "Link", type: "url" },
           ],
         },

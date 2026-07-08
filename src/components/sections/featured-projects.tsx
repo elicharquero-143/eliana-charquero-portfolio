@@ -6,6 +6,7 @@ import { ProjectCard } from "@/components/projects/project-card";
 import { Button } from "@/components/ui/button";
 import { dictionaries } from "@/i18n/dictionaries";
 import { useLanguage } from "@/i18n/language-provider";
+import { localizeProjects } from "@/lib/project-localization";
 import { routes } from "@/lib/routes";
 import type { Project } from "@/types/project";
 
@@ -20,6 +21,7 @@ export function FeaturedProjects({ initialProjects }: FeaturedProjectsProps) {
     initialProjects && initialProjects.length > 0
       ? initialProjects
       : (dictionary.projects as readonly Project[]);
+  const localizedProjects = localizeProjects(projects, language);
 
   return (
     <section className="bg-lavender py-16 md:py-[60px]">
@@ -30,7 +32,7 @@ export function FeaturedProjects({ initialProjects }: FeaturedProjectsProps) {
           </h2>
         </Reveal>
         <Stagger className="mt-10 grid w-full max-w-[1160px] gap-x-12 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
-          {projects.map((project) => (
+          {localizedProjects.map((project) => (
             <StaggerItem key={project.slug}>
               <ProjectCard project={project} variant="static" />
             </StaggerItem>
