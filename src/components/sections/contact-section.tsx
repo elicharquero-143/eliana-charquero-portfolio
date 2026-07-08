@@ -16,7 +16,8 @@ export function ContactSection() {
 
   async function submitContact(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
+    const formElement = event.currentTarget;
+    const formData = new FormData(formElement);
 
     setStatus("sending");
 
@@ -32,7 +33,7 @@ export function ContactSection() {
       });
 
       if (response.ok) {
-        event.currentTarget.reset();
+        formElement.reset();
         setStatus("success");
         return;
       }
@@ -52,7 +53,7 @@ export function ContactSection() {
               {dictionary.home.contactTitle}
             </h2>
             <DecorativeImage
-              className="spin-slow absolute left-[calc(100%+28px)] top-1/2 hidden h-auto w-[96px] -translate-y-1/2 md:block"
+              className="spin-slow pointer-events-none absolute left-[calc(100%+2px)] top-1/2 z-0 hidden h-auto w-[82px] -translate-y-1/2 opacity-90 md:block"
               height={130}
               src="/images/figma/shape-purple.svg"
               width={129}

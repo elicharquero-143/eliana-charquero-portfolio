@@ -223,7 +223,7 @@ export function ServiceWizard() {
             className={cn(
               "mt-8 grid gap-8",
               showRecommendation
-                ? "xl:grid-cols-[minmax(0,1fr)_320px]"
+                ? "xl:grid-cols-[minmax(340px,1fr)_320px]"
                 : "xl:grid-cols-1",
             )}
           >
@@ -256,7 +256,7 @@ export function ServiceWizard() {
                       {content.formIntro}
                     </p>
                   </div>
-                  <div className="mt-6 grid gap-4 md:grid-cols-2">
+                  <div className="mt-6 grid gap-4 2xl:grid-cols-2">
                     <WizardField
                       label={content.fields.name}
                       name="name"
@@ -296,7 +296,7 @@ export function ServiceWizard() {
                       placeholder={content.placeholders.timeline}
                       value={form.timeline}
                     />
-                    <label className="md:col-span-2">
+                    <label className="2xl:col-span-2">
                       <span className="font-sans text-base font-black leading-[26px] text-ink">
                         {content.fields.message}
                       </span>
