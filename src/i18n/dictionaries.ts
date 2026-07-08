@@ -38,6 +38,10 @@ export const dictionaries = {
         email: "Email",
         message: "Escribe tu mensaje aquí",
         submit: "Enviar",
+        sending: "Enviando...",
+        success: "Mensaje enviado con éxito. Gracias por escribirme.",
+        error:
+          "No se pudo enviar el mensaje. Intenta nuevamente o escríbeme por email.",
       },
     },
     projectPage: {
@@ -154,8 +158,11 @@ export const dictionaries = {
         message: "Contexto, objetivos, referencias o cualquier detalle útil.",
       },
       submit: "Enviar solicitud",
+      sending: "Enviando...",
       successMessage:
         "¡Solicitud enviada con éxito! Gracias por confiar en mí, pronto me pondré en contacto.",
+      errorMessage:
+        "No se pudo enviar la solicitud. Intenta nuevamente o escríbeme por email.",
       close: "Cerrar",
       serviceChoices: [
         { id: "web", label: "Web", serviceSlugs: ["ux-ui-web-design"] },
@@ -372,6 +379,9 @@ export const dictionaries = {
         email: "Email",
         message: "Write your message here",
         submit: "Send",
+        sending: "Sending...",
+        success: "Message sent successfully. Thank you for reaching out.",
+        error: "The message could not be sent. Please try again or email me.",
       },
     },
     projectPage: {
@@ -488,8 +498,11 @@ export const dictionaries = {
         message: "Context, goals, references, or any useful detail.",
       },
       submit: "Send request",
+      sending: "Sending...",
       successMessage:
         "Request sent successfully! Thank you for trusting me, I’ll be in touch soon.",
+      errorMessage:
+        "The request could not be sent. Please try again or email me.",
       close: "Close",
       serviceChoices: [
         { id: "web", label: "Web", serviceSlugs: ["ux-ui-web-design"] },

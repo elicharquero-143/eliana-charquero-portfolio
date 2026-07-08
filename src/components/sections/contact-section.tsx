@@ -1,5 +1,6 @@
 "use client";
 
+import { FormEvent, useState } from "react";
 import { DecorativeImage } from "@/components/layout/decorative-image";
 import { Reveal } from "@/components/motion/reveal";
 import { Button } from "@/components/ui/button";
@@ -9,6 +10,38 @@ import { useLanguage } from "@/i18n/language-provider";
 export function ContactSection() {
   const { language } = useLanguage();
   const dictionary = dictionaries[language];
+  const [status, setStatus] = useState<"error" | "idle" | "sending" | "success">(
+    "idle",
+  );
+
+  async function submitContact(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+
+    setStatus("sending");
+
+    try {
+      const response = await fetch("/api/contact", {
+        body: JSON.stringify({
+          email: String(formData.get("email") ?? ""),
+          message: String(formData.get("message") ?? ""),
+          name: String(formData.get("name") ?? ""),
+        }),
+        headers: { "Content-Type": "application/json" },
+        method: "POST",
+      });
+
+      if (response.ok) {
+        event.currentTarget.reset();
+        setStatus("success");
+        return;
+      }
+
+      setStatus("error");
+    } catch {
+      setStatus("error");
+    }
+  }
 
   return (
     <section className="bg-cream py-20 md:py-[80px]">
@@ -28,7 +61,7 @@ export function ContactSection() {
         </Reveal>
 
         <Reveal delay={0.08}>
-          <form className="flex flex-col gap-6" action="/api/contact" method="post">
+          <form className="flex flex-col gap-6" onSubmit={submitContact}>
             <label className="sr-only" htmlFor="name">
               {dictionary.home.form.name}
             </label>
@@ -37,6 +70,7 @@ export function ContactSection() {
               id="name"
               name="name"
               placeholder={dictionary.home.form.name}
+              required
               type="text"
             />
             <label className="sr-only" htmlFor="email">
@@ -47,6 +81,7 @@ export function ContactSection() {
               id="email"
               name="email"
               placeholder={dictionary.home.form.email}
+              required
               type="email"
             />
             <label className="sr-only" htmlFor="message">
@@ -57,9 +92,24 @@ export function ContactSection() {
               id="message"
               name="message"
               placeholder={dictionary.home.form.message}
+              required
             />
+            {status === "success" ? (
+              <p className="rounded-lg bg-lavender/50 px-5 py-4 font-work text-sm font-bold text-ink">
+                {dictionary.home.form.success}
+              </p>
+            ) : null}
+            {status === "error" ? (
+              <p className="rounded-lg bg-[#ffd285]/40 px-5 py-4 font-work text-sm font-bold text-ink">
+                {dictionary.home.form.error}
+              </p>
+            ) : null}
             <div className="pt-4">
-              <Button type="submit">{dictionary.home.form.submit}</Button>
+              <Button disabled={status === "sending"} type="submit">
+                {status === "sending"
+                  ? dictionary.home.form.sending
+                  : dictionary.home.form.submit}
+              </Button>
             </div>
           </form>
         </Reveal>

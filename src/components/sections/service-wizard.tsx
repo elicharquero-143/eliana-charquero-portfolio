@@ -39,6 +39,9 @@ export function ServiceWizard() {
   const [selectedServiceId, setSelectedServiceId] = useState("");
   const [form, setForm] = useState<WizardForm>(initialForm);
   const [submitted, setSubmitted] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<
+    "error" | "idle" | "sending" | "success"
+  >("idle");
 
   const isQuestionStep = stepIndex < content.steps.length;
   const isServiceChoiceStep = stepIndex === serviceChoiceStepIndex;
@@ -111,11 +114,50 @@ export function ServiceWizard() {
     setForm(initialForm);
     setStepIndex(0);
     setSubmitted(false);
+    setSubmitStatus("idle");
   }
 
-  function submitRequest(event: FormEvent<HTMLFormElement>) {
+  async function submitRequest(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setSubmitted(true);
+    setSubmitStatus("sending");
+
+    const selectedService =
+      content.serviceChoices.find((service) => service.id === selectedServiceId)
+        ?.label ?? selectedServiceId;
+    const answersSummary = content.steps.map((step) => ({
+      answer:
+        step.options.find((option) => option.id === answers[step.id])?.label ??
+        answers[step.id] ??
+        "",
+      question: step.question,
+    }));
+
+    try {
+      const response = await fetch("/api/service-wizard", {
+        body: JSON.stringify({
+          answers: answersSummary,
+          budget: form.budget,
+          email: form.email,
+          message: form.message,
+          name: form.name,
+          recommendedService: primaryRecommendation.title,
+          selectedService,
+          timeline: form.timeline,
+        }),
+        headers: { "Content-Type": "application/json" },
+        method: "POST",
+      });
+
+      if (response.ok) {
+        setSubmitted(true);
+        setSubmitStatus("success");
+        return;
+      }
+
+      setSubmitStatus("error");
+    } catch {
+      setSubmitStatus("error");
+    }
   }
 
   return (
@@ -282,8 +324,15 @@ export function ServiceWizard() {
                       <ChevronLeft aria-hidden className="mr-1 size-5" />
                       {content.back}
                     </Button>
-                    <Button type="submit">{content.submit}</Button>
+                    <Button disabled={submitStatus === "sending"} type="submit">
+                      {submitStatus === "sending" ? content.sending : content.submit}
+                    </Button>
                   </div>
+                  {submitStatus === "error" ? (
+                    <p className="mt-5 rounded-lg bg-yolk/35 px-5 py-4 text-sm font-bold text-ink">
+                      {content.errorMessage}
+                    </p>
+                  ) : null}
                 </form>
               ) : (
                 <>
