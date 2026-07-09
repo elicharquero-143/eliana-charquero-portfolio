@@ -106,8 +106,10 @@ export const servicesQuery = groq`
 export const testimonialsQuery = groq`
   *[_type == "testimonial"] | order(_createdAt asc) {
     quote,
+    quoteEn,
     name,
     role,
+    roleEn,
     company,
     "avatar": avatar.asset->url,
     rating

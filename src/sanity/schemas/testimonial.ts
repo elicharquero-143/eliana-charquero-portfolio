@@ -13,6 +13,14 @@ export const testimonial = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: "quoteEn",
+      title: "Testimonio en inglés",
+      type: "text",
+      rows: 4,
+      description:
+        "Opcional. Si está vacío, la web mantiene el testimonio en español.",
+    }),
+    defineField({
       name: "name",
       title: "Nombre",
       type: "string",
@@ -21,6 +29,11 @@ export const testimonial = defineType({
     defineField({
       name: "role",
       title: "Rol",
+      type: "string",
+    }),
+    defineField({
+      name: "roleEn",
+      title: "Rol en inglés",
       type: "string",
     }),
     defineField({

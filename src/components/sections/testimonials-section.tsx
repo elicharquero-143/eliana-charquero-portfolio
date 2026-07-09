@@ -20,9 +20,21 @@ export function TestimonialsSection({
     ...testimonial,
     avatar: "/images/figma/client.png",
   }));
+  const cmsTestimonials =
+    initialTestimonials?.map((testimonial) => ({
+      ...testimonial,
+      quote:
+        language === "en" && testimonial.quoteEn?.trim()
+          ? testimonial.quoteEn
+          : testimonial.quote,
+      role:
+        language === "en" && testimonial.roleEn?.trim()
+          ? testimonial.roleEn
+          : testimonial.role,
+    })) ?? [];
   const testimonials: CmsTestimonial[] =
-    language === "es" && initialTestimonials && initialTestimonials.length > 0
-      ? initialTestimonials
+    cmsTestimonials.length > 0
+      ? cmsTestimonials
       : fallbackTestimonials;
 
   return (

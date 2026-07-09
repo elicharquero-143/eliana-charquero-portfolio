@@ -13,8 +13,10 @@ export type CmsService = {
 
 export type CmsTestimonial = {
   quote: string;
+  quoteEn?: string;
   name: string;
   role?: string;
+  roleEn?: string;
   company?: string;
   avatar?: string;
   rating?: number;
