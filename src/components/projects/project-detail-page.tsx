@@ -1,8 +1,9 @@
 "use client";
 
-import { ArrowLeft, ExternalLink } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight, ExternalLink, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useCallback, useEffect, useState } from "react";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { MotionImageBlock, Reveal, Stagger, StaggerItem } from "@/components/motion/reveal";
@@ -22,10 +23,80 @@ export function ProjectDetailPage({ initialProject, slug }: ProjectDetailPagePro
   const { language } = useLanguage();
   const dictionary = dictionaries[language];
   const content = dictionary.projectPage;
+  const lightboxLabels =
+    language === "en"
+      ? {
+          close: "Close image",
+          next: "Next image",
+          previous: "Previous image",
+          view: "View image fullscreen",
+        }
+      : {
+          close: "Cerrar imagen",
+          next: "Imagen siguiente",
+          previous: "Imagen anterior",
+          view: "Ver imagen en pantalla completa",
+        };
   const projects = dictionary.projects as readonly Project[];
   const projectIndex = projects.findIndex((item) => item.slug === slug);
   const sourceProject = initialProject ?? projects[projectIndex];
   const project = sourceProject ? localizeProject(sourceProject, language) : null;
+  const [activeGalleryIndex, setActiveGalleryIndex] = useState<number | null>(null);
+  const galleryImages = project?.gallery.length ? project.gallery : [];
+  const activeGalleryImage =
+    activeGalleryIndex === null ? null : galleryImages[activeGalleryIndex];
+
+  const closeLightbox = useCallback(() => {
+    setActiveGalleryIndex(null);
+  }, []);
+
+  const showPreviousImage = useCallback(() => {
+    setActiveGalleryIndex((current) =>
+      current === null
+        ? current
+        : (current - 1 + galleryImages.length) % galleryImages.length,
+    );
+  }, [galleryImages.length]);
+
+  const showNextImage = useCallback(() => {
+    setActiveGalleryIndex((current) =>
+      current === null ? current : (current + 1) % galleryImages.length,
+    );
+  }, [galleryImages.length]);
+
+  useEffect(() => {
+    if (activeGalleryIndex === null) {
+      return;
+    }
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        closeLightbox();
+      }
+
+      if (event.key === "ArrowLeft" && galleryImages.length > 1) {
+        showPreviousImage();
+      }
+
+      if (event.key === "ArrowRight" && galleryImages.length > 1) {
+        showNextImage();
+      }
+    }
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [
+    activeGalleryIndex,
+    closeLightbox,
+    galleryImages.length,
+    showNextImage,
+    showPreviousImage,
+  ]);
 
   if (!project) {
     return (
@@ -51,7 +122,6 @@ export function ProjectDetailPage({ initialProject, slug }: ProjectDetailPagePro
   }
 
   const heroImage = project.heroImage ?? project.coverImage;
-  const galleryImages = project.gallery.length > 0 ? project.gallery : [];
   const detailTags = [
     project.role,
     project.category.title,
@@ -141,18 +211,76 @@ export function ProjectDetailPage({ initialProject, slug }: ProjectDetailPagePro
                   className="relative aspect-[1.35] overflow-hidden rounded-xl bg-white"
                   key={`${image}-${index}`}
                 >
-                  <Image
-                    alt={`${project.title} ${index + 1}`}
-                    className="h-full w-full object-contain"
-                    fill
-                    sizes="(min-width: 768px) 50vw, 100vw"
-                    src={image}
-                  />
+                  <button
+                    aria-label={`${lightboxLabels.view}: ${project.title} ${index + 1}`}
+                    className="group h-full w-full cursor-zoom-in focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink"
+                    onClick={() => setActiveGalleryIndex(index)}
+                    type="button"
+                  >
+                    <Image
+                      alt={`${project.title} ${index + 1}`}
+                      className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.02]"
+                      fill
+                      sizes="(min-width: 768px) 50vw, 100vw"
+                      src={image}
+                    />
+                    <span className="pointer-events-none absolute inset-0 bg-ink/0 transition-colors duration-300 group-hover:bg-ink/10" />
+                  </button>
                 </StaggerItem>
               ))}
             </Stagger>
           </div>
         </section>
+      ) : null}
+
+      {activeGalleryImage ? (
+        <div
+          aria-modal="true"
+          className="fixed inset-0 z-[90] flex items-center justify-center bg-ink/90 px-4 py-6 backdrop-blur-sm md:px-8"
+          role="dialog"
+        >
+          <button
+            aria-label={lightboxLabels.close}
+            className="absolute right-4 top-4 z-10 grid size-11 place-items-center rounded-full border border-white/30 bg-white/10 text-white transition-colors hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white md:right-8 md:top-8"
+            onClick={closeLightbox}
+            type="button"
+          >
+            <X aria-hidden className="size-6" />
+          </button>
+
+          {galleryImages.length > 1 ? (
+            <button
+              aria-label={lightboxLabels.previous}
+              className="absolute left-4 top-1/2 z-10 grid size-11 -translate-y-1/2 place-items-center rounded-full border border-white/30 bg-white/10 text-white transition-colors hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white md:left-8"
+              onClick={showPreviousImage}
+              type="button"
+            >
+              <ChevronLeft aria-hidden className="size-7" />
+            </button>
+          ) : null}
+
+          <div className="relative h-full max-h-[88vh] w-full max-w-[1280px]">
+            <Image
+              alt={`${project.title} ${(activeGalleryIndex ?? 0) + 1}`}
+              className="object-contain"
+              fill
+              priority
+              sizes="100vw"
+              src={activeGalleryImage}
+            />
+          </div>
+
+          {galleryImages.length > 1 ? (
+            <button
+              aria-label={lightboxLabels.next}
+              className="absolute right-4 top-1/2 z-10 grid size-11 -translate-y-1/2 place-items-center rounded-full border border-white/30 bg-white/10 text-white transition-colors hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white md:right-8"
+              onClick={showNextImage}
+              type="button"
+            >
+              <ChevronRight aria-hidden className="size-7" />
+            </button>
+          ) : null}
+        </div>
       ) : null}
       <SiteFooter />
     </main>
