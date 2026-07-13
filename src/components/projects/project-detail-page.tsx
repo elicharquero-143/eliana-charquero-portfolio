@@ -236,16 +236,22 @@ export function ProjectDetailPage({ initialProject, slug }: ProjectDetailPagePro
       {activeGalleryImage ? (
         <div
           aria-modal="true"
-          className="fixed inset-0 z-[90] flex items-center justify-center bg-ink/90 px-4 py-6 backdrop-blur-sm md:px-8"
+          className="fixed inset-0 z-[90] flex items-center justify-center bg-ink/80 px-4 py-16 backdrop-blur-md md:px-8"
+          onClick={(event) => {
+            if (event.target === event.currentTarget) {
+              closeLightbox();
+            }
+          }}
           role="dialog"
         >
           <button
             aria-label={lightboxLabels.close}
-            className="absolute right-4 top-4 z-10 grid size-11 place-items-center rounded-full border border-white/30 bg-white/10 text-white transition-colors hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white md:right-8 md:top-8"
+            className="absolute right-5 top-5 z-20 grid size-12 place-items-center rounded-full border-2 border-cream bg-ink text-cream shadow-soft transition-colors hover:bg-plum focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cream md:right-10 md:top-10"
             onClick={closeLightbox}
             type="button"
           >
             <X aria-hidden className="size-6" />
+            <span className="sr-only">{lightboxLabels.close}</span>
           </button>
 
           {galleryImages.length > 1 ? (
@@ -264,6 +270,7 @@ export function ProjectDetailPage({ initialProject, slug }: ProjectDetailPagePro
               alt={`${project.title} ${(activeGalleryIndex ?? 0) + 1}`}
               className="object-contain"
               fill
+              onClick={(event) => event.stopPropagation()}
               priority
               sizes="100vw"
               src={activeGalleryImage}
