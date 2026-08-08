@@ -45,7 +45,7 @@ export const allProjectsQuery = groq`
 `;
 
 export const projectBySlugQuery = groq`
-  *[_type == "project" && slug.current == $slug][0] {
+  *[_type == "project" && slug.current in [$slug, $decodedSlug]][0] {
     title,
     titleEn,
     "slug": slug.current,

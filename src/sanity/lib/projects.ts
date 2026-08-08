@@ -29,6 +29,14 @@ function normalizeProject(project: Project): Project {
   };
 }
 
+function decodeSlug(slug: string) {
+  try {
+    return decodeURIComponent(slug);
+  } catch {
+    return slug;
+  }
+}
+
 async function fetchSanityProjects(query: string): Promise<Project[]> {
   if (!hasSanityConfig()) {
     return [];
@@ -64,11 +72,13 @@ export async function getFeaturedProjects() {
 }
 
 export async function getProjectBySlug(slug: string) {
+  const decodedSlug = decodeSlug(slug);
+
   if (hasSanityConfig()) {
     try {
       const project = await sanityClient.fetch<Project | null>(
         projectBySlugQuery,
-        { slug },
+        { decodedSlug, slug },
         sanityFetchOptions,
       );
 
@@ -76,11 +86,19 @@ export async function getProjectBySlug(slug: string) {
         return normalizeProject(project);
       }
     } catch {
-      return fallbackProjects.find((project) => project.slug === slug) ?? null;
+      return (
+        fallbackProjects.find(
+          (project) => project.slug === slug || project.slug === decodedSlug,
+        ) ?? null
+      );
     }
   }
 
-  return fallbackProjects.find((project) => project.slug === slug) ?? null;
+  return (
+    fallbackProjects.find(
+      (project) => project.slug === slug || project.slug === decodedSlug,
+    ) ?? null
+  );
 }
 
 export async function getProjectSlugs() {
