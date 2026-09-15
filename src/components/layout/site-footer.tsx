@@ -25,6 +25,7 @@ export function SiteFooter() {
               className="font-sans text-lg leading-7 transition-opacity hover:opacity-70"
               href={link.href}
               key={link.label}
+              rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
               target={link.href.startsWith("http") ? "_blank" : undefined}
             >
               {link.label}

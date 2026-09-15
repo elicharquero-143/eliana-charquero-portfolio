@@ -10,6 +10,7 @@ export const siteSettings = {
     { label: "Email", href: "mailto:elicharquero@gmail.com" },
     { label: "LinkedIn", href: "https://www.linkedin.com/in/elianacharquero/" },
     { label: "Behance", href: "https://www.behance.net/elicharquero" },
+    { label: "Instagram", href: "https://www.instagram.com/elichar.design/" },
   ],
   languages: [
     { label: "ING", href: routes.home },

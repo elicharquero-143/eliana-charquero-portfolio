@@ -21,6 +21,10 @@ export const dictionaries = {
           href: "https://www.linkedin.com/in/elianacharquero/",
         },
         { label: "Behance", href: "https://www.behance.net/elicharquero" },
+        {
+          label: "Instagram",
+          href: "https://www.instagram.com/elichar.design/",
+        },
       ],
     },
     home: {
@@ -362,6 +366,10 @@ export const dictionaries = {
           href: "https://www.linkedin.com/in/elianacharquero/",
         },
         { label: "Behance", href: "https://www.behance.net/elicharquero" },
+        {
+          label: "Instagram",
+          href: "https://www.instagram.com/elichar.design/",
+        },
       ],
     },
     home: {
