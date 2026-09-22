@@ -8,7 +8,7 @@ export const dictionaries = {
       about: "SOBRE MÍ",
       contact: "CONTACTO",
       languageLabel: "Idioma",
-      english: "ING",
+      english: "ENG",
       spanish: "ESP",
     },
     site: {
@@ -353,7 +353,7 @@ export const dictionaries = {
       about: "ABOUT",
       contact: "CONTACT",
       languageLabel: "Language",
-      english: "ING",
+      english: "ENG",
       spanish: "ESP",
     },
     site: {

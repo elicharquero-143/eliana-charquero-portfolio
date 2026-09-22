@@ -13,7 +13,7 @@ export const siteSettings = {
     { label: "Instagram", href: "https://www.instagram.com/elichar.design/" },
   ],
   languages: [
-    { label: "ING", href: routes.home },
+    { label: "ENG", href: routes.home },
     { label: "ESP", href: routes.home },
   ],
 } as const;
