@@ -48,6 +48,14 @@ const storyBlock = defineArrayMember({
   title: "Bloque de contenido",
   type: "object",
   fields: [
+    defineField({
+      name: "mediaOnly",
+      title: "Mostrar solo las imágenes",
+      type: "boolean",
+      description:
+        "Oculta el título, la explicación y los epígrafes de este bloque en la web.",
+      initialValue: false,
+    }),
     defineField({ name: "title", title: "Título", type: "string" }),
     defineField({
       name: "titleEn",

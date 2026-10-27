@@ -25,6 +25,7 @@ export type ProjectStoryMedia = {
 
 export type ProjectStoryBlock = {
   _key?: string;
+  mediaOnly?: boolean;
   title?: string;
   titleEn?: string;
   body?: string;

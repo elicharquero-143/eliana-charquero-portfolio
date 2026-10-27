@@ -95,11 +95,13 @@ function StoryMediaGrid({
   media,
   onOpenImage,
   projectTitle,
+  showCaptions = true,
   viewImage,
 }: {
   media?: ProjectStoryMedia[];
   onOpenImage: (url: string) => void;
   projectTitle: string;
+  showCaptions?: boolean;
   viewImage: string;
 }) {
   const images = media?.filter((item) => item.url) ?? [];
@@ -128,7 +130,7 @@ function StoryMediaGrid({
                 width={item.width ?? 1600}
               />
             </button>
-            {hasText(item.caption) ? (
+            {showCaptions && hasText(item.caption) ? (
               <figcaption className="mt-3 max-w-[720px] font-sans text-sm leading-6 text-muted">
                 {item.caption}
               </figcaption>
@@ -175,32 +177,39 @@ function StoryBlocks({
     <div className="space-y-14 md:space-y-20">
       {visibleBlocks.map((block, index) => (
         <article
-          className="border-t border-ink/15 pt-7"
+          className={
+            block.mediaOnly && hasMedia(block.media)
+              ? ""
+              : "border-t border-ink/15 pt-7"
+          }
           key={block._key ?? `${block.title}-${index}`}
         >
-          <div className="grid gap-6 md:grid-cols-[72px_minmax(0,1fr)]">
-            <p className="font-mono text-sm text-muted">
-              {String(index + 1).padStart(2, "0")}
-            </p>
-            <div>
-              {hasText(block.title) ? (
-                <h3 className="font-sans text-2xl font-bold leading-tight text-ink md:text-[30px]">
-                  {block.title}
-                </h3>
-              ) : null}
-              {hasText(block.body) ? (
-                <p className="mt-4 max-w-[760px] whitespace-pre-line text-pretty font-sans text-lg leading-8 text-ink/85">
-                  {block.body}
-                </p>
-              ) : null}
+          {!block.mediaOnly ? (
+            <div className="grid gap-6 md:grid-cols-[72px_minmax(0,1fr)]">
+              <p className="font-mono text-sm text-muted">
+                {String(index + 1).padStart(2, "0")}
+              </p>
+              <div>
+                {hasText(block.title) ? (
+                  <h3 className="font-sans text-2xl font-bold leading-tight text-ink md:text-[30px]">
+                    {block.title}
+                  </h3>
+                ) : null}
+                {hasText(block.body) ? (
+                  <p className="mt-4 max-w-[760px] whitespace-pre-line text-pretty font-sans text-lg leading-8 text-ink/85">
+                    {block.body}
+                  </p>
+                ) : null}
+              </div>
             </div>
-          </div>
+          ) : null}
           {hasMedia(block.media) ? (
-            <div className="mt-7 md:ml-[96px]">
+            <div className={block.mediaOnly ? "" : "mt-7 md:ml-[96px]"}>
               <StoryMediaGrid
                 media={block.media}
                 onOpenImage={onOpenImage}
                 projectTitle={projectTitle}
+                showCaptions={!block.mediaOnly}
                 viewImage={viewImage}
               />
             </div>

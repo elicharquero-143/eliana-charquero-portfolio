@@ -86,6 +86,7 @@ export const projectBySlugQuery = groq`
         introEn,
         "blocks": blocks[]{
           _key,
+          mediaOnly,
           title,
           titleEn,
           body,
@@ -107,6 +108,7 @@ export const projectBySlugQuery = groq`
         introEn,
         "blocks": blocks[]{
           _key,
+          mediaOnly,
           title,
           titleEn,
           body,
@@ -128,6 +130,7 @@ export const projectBySlugQuery = groq`
         introEn,
         "blocks": blocks[]{
           _key,
+          mediaOnly,
           title,
           titleEn,
           body,
