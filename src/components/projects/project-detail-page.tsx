@@ -3,10 +3,15 @@
 import { ArrowLeft, ChevronLeft, ChevronRight, ExternalLink, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { MotionImageBlock, Reveal, Stagger, StaggerItem } from "@/components/motion/reveal";
+import {
+  getCaseStudyImages,
+  hasCaseStudyContent,
+  ProjectCaseStudyContent,
+} from "@/components/projects/project-case-study";
 import { Button } from "@/components/ui/button";
 import { dictionaries } from "@/i18n/dictionaries";
 import { useLanguage } from "@/i18n/language-provider";
@@ -40,32 +45,59 @@ export function ProjectDetailPage({ initialProject, slug }: ProjectDetailPagePro
   const projects = dictionary.projects as readonly Project[];
   const projectIndex = projects.findIndex((item) => item.slug === slug);
   const sourceProject = initialProject ?? projects[projectIndex];
-  const project = sourceProject ? localizeProject(sourceProject, language) : null;
-  const [activeGalleryIndex, setActiveGalleryIndex] = useState<number | null>(null);
-  const galleryImages = project?.gallery.length ? project.gallery : [];
-  const activeGalleryImage =
-    activeGalleryIndex === null ? null : galleryImages[activeGalleryIndex];
+  const project = useMemo(
+    () => (sourceProject ? localizeProject(sourceProject, language) : null),
+    [language, sourceProject],
+  );
+  const caseStudy = project?.caseStudy;
+  const showCaseStudy = hasCaseStudyContent(caseStudy);
+  const galleryImages = useMemo(
+    () => (project?.gallery.length ? project.gallery : []),
+    [project],
+  );
+  const lightboxImages = useMemo(() => {
+    const caseStudyImages = showCaseStudy ? getCaseStudyImages(caseStudy) : [];
+
+    return [
+      ...caseStudyImages.map((item) => item.url),
+      ...galleryImages,
+    ].filter((image, index, images) => images.indexOf(image) === index);
+  }, [caseStudy, galleryImages, showCaseStudy]);
+  const [activeImageIndex, setActiveImageIndex] = useState<number | null>(null);
+  const activeImage =
+    activeImageIndex === null ? null : lightboxImages[activeImageIndex];
 
   const closeLightbox = useCallback(() => {
-    setActiveGalleryIndex(null);
+    setActiveImageIndex(null);
   }, []);
 
+  const openLightbox = useCallback(
+    (image: string) => {
+      const imageIndex = lightboxImages.indexOf(image);
+
+      if (imageIndex >= 0) {
+        setActiveImageIndex(imageIndex);
+      }
+    },
+    [lightboxImages],
+  );
+
   const showPreviousImage = useCallback(() => {
-    setActiveGalleryIndex((current) =>
+    setActiveImageIndex((current) =>
       current === null
         ? current
-        : (current - 1 + galleryImages.length) % galleryImages.length,
+        : (current - 1 + lightboxImages.length) % lightboxImages.length,
     );
-  }, [galleryImages.length]);
+  }, [lightboxImages.length]);
 
   const showNextImage = useCallback(() => {
-    setActiveGalleryIndex((current) =>
-      current === null ? current : (current + 1) % galleryImages.length,
+    setActiveImageIndex((current) =>
+      current === null ? current : (current + 1) % lightboxImages.length,
     );
-  }, [galleryImages.length]);
+  }, [lightboxImages.length]);
 
   useEffect(() => {
-    if (activeGalleryIndex === null) {
+    if (activeImageIndex === null) {
       return;
     }
 
@@ -74,11 +106,11 @@ export function ProjectDetailPage({ initialProject, slug }: ProjectDetailPagePro
         closeLightbox();
       }
 
-      if (event.key === "ArrowLeft" && galleryImages.length > 1) {
+      if (event.key === "ArrowLeft" && lightboxImages.length > 1) {
         showPreviousImage();
       }
 
-      if (event.key === "ArrowRight" && galleryImages.length > 1) {
+      if (event.key === "ArrowRight" && lightboxImages.length > 1) {
         showNextImage();
       }
     }
@@ -91,9 +123,9 @@ export function ProjectDetailPage({ initialProject, slug }: ProjectDetailPagePro
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, [
-    activeGalleryIndex,
+    activeImageIndex,
     closeLightbox,
-    galleryImages.length,
+    lightboxImages.length,
     showNextImage,
     showPreviousImage,
   ]);
@@ -122,12 +154,17 @@ export function ProjectDetailPage({ initialProject, slug }: ProjectDetailPagePro
   }
 
   const heroImage = project.heroImage ?? project.coverImage;
-  const detailTags = [
-    project.role,
-    project.category.title,
-    project.year,
-    ...project.tools,
-  ].filter((item, index, list) => item && list.indexOf(item) === index);
+  const detailTags = (
+    showCaseStudy
+      ? [project.category.title, ...project.tools]
+      : [project.role, project.category.title, project.year, ...project.tools]
+  ).filter((item, index, list) => item && list.indexOf(item) === index);
+  const projectMetadata = [
+    { label: content.role, value: project.role },
+    { label: content.year, value: project.year },
+    { label: content.context, value: caseStudy?.context },
+    { label: content.status, value: caseStudy?.status },
+  ].filter((item) => item.value?.trim());
   const externalLinks =
     project.externalLinks?.filter((link) => link.href && link.label) ?? [];
 
@@ -176,6 +213,21 @@ export function ProjectDetailPage({ initialProject, slug }: ProjectDetailPagePro
               {project.description}
             </p>
 
+            {showCaseStudy && projectMetadata.length > 0 ? (
+              <dl className="mt-8 grid gap-x-8 gap-y-6 border-t border-ink/20 pt-7 sm:grid-cols-2">
+                {projectMetadata.map((item) => (
+                  <div key={item.label}>
+                    <dt className="font-mono text-xs font-bold uppercase text-plum">
+                      {item.label}
+                    </dt>
+                    <dd className="mt-2 font-sans text-base leading-7 text-ink">
+                      {item.value}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            ) : null}
+
             {externalLinks.length > 0 ? (
               <div className="mt-8 flex flex-wrap gap-3">
                 {externalLinks.map((link) => (
@@ -197,6 +249,26 @@ export function ProjectDetailPage({ initialProject, slug }: ProjectDetailPagePro
         </div>
       </section>
 
+      {showCaseStudy && caseStudy ? (
+        <ProjectCaseStudyContent
+          caseStudy={caseStudy}
+          labels={{
+            decisionsTitle: content.decisionsTitle,
+            expectedImpactTitle: content.expectedImpactTitle,
+            learningsTitle: content.learningsTitle,
+            limitationTitle: content.limitationTitle,
+            measuredResultsTitle: content.measuredResultsTitle,
+            problemTitle: content.problemTitle,
+            researchTitle: content.researchTitle,
+            resultsTitle: content.resultsTitle,
+            solutionTitle: content.solutionTitle,
+            viewImage: lightboxLabels.view,
+          }}
+          onOpenImage={openLightbox}
+          projectTitle={project.title}
+        />
+      ) : null}
+
       {galleryImages.length > 0 ? (
         <section className="bg-cream px-5 py-16 md:px-[68px] md:py-[96px]">
           <div className="home-scale">
@@ -214,7 +286,7 @@ export function ProjectDetailPage({ initialProject, slug }: ProjectDetailPagePro
                   <button
                     aria-label={`${lightboxLabels.view}: ${project.title} ${index + 1}`}
                     className="group h-full w-full cursor-zoom-in focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink"
-                    onClick={() => setActiveGalleryIndex(index)}
+                    onClick={() => openLightbox(image)}
                     type="button"
                   >
                     <Image
@@ -233,8 +305,9 @@ export function ProjectDetailPage({ initialProject, slug }: ProjectDetailPagePro
         </section>
       ) : null}
 
-      {activeGalleryImage ? (
+      {activeImage ? (
         <div
+          aria-label={lightboxLabels.view}
           aria-modal="true"
           className="fixed inset-0 z-[90] flex items-center justify-center bg-ink/80 px-4 py-16 backdrop-blur-md md:px-8"
           onClick={(event) => {
@@ -254,7 +327,7 @@ export function ProjectDetailPage({ initialProject, slug }: ProjectDetailPagePro
             <span className="sr-only">{lightboxLabels.close}</span>
           </button>
 
-          {galleryImages.length > 1 ? (
+          {lightboxImages.length > 1 ? (
             <button
               aria-label={lightboxLabels.previous}
               className="absolute left-4 top-1/2 z-10 grid size-11 -translate-y-1/2 place-items-center rounded-full border border-white/30 bg-white/10 text-white transition-colors hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white md:left-8"
@@ -267,17 +340,17 @@ export function ProjectDetailPage({ initialProject, slug }: ProjectDetailPagePro
 
           <div className="relative h-full max-h-[88vh] w-full max-w-[1280px]">
             <Image
-              alt={`${project.title} ${(activeGalleryIndex ?? 0) + 1}`}
+              alt={`${project.title} ${(activeImageIndex ?? 0) + 1}`}
               className="object-contain"
               fill
               onClick={(event) => event.stopPropagation()}
               priority
               sizes="100vw"
-              src={activeGalleryImage}
+              src={activeImage}
             />
           </div>
 
-          {galleryImages.length > 1 ? (
+          {lightboxImages.length > 1 ? (
             <button
               aria-label={lightboxLabels.next}
               className="absolute right-4 top-1/2 z-10 grid size-11 -translate-y-1/2 place-items-center rounded-full border border-white/30 bg-white/10 text-white transition-colors hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white md:right-8"

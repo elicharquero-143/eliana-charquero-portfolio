@@ -12,6 +12,56 @@ export type ProjectLink = {
   href: string;
 };
 
+export type ProjectStoryMedia = {
+  _key?: string;
+  url: string;
+  width?: number;
+  height?: number;
+  alt?: string;
+  altEn?: string;
+  caption?: string;
+  captionEn?: string;
+};
+
+export type ProjectStoryBlock = {
+  _key?: string;
+  title?: string;
+  titleEn?: string;
+  body?: string;
+  bodyEn?: string;
+  media?: ProjectStoryMedia[];
+};
+
+export type ProjectStorySection = {
+  intro?: string;
+  introEn?: string;
+  media?: ProjectStoryMedia[];
+  blocks?: ProjectStoryBlock[];
+};
+
+export type ProjectResultItem = {
+  _key?: string;
+  text: string;
+  textEn?: string;
+};
+
+export type ProjectCaseStudy = {
+  enabled?: boolean;
+  context?: string;
+  contextEn?: string;
+  status?: string;
+  statusEn?: string;
+  problem?: ProjectStorySection;
+  research?: ProjectStorySection;
+  decisions?: ProjectStorySection;
+  solution?: ProjectStorySection;
+  measuredResults?: ProjectResultItem[];
+  expectedImpact?: ProjectResultItem[];
+  learnings?: ProjectResultItem[];
+  limitation?: string;
+  limitationEn?: string;
+};
+
 export type Project = {
   title: string;
   titleEn?: string;
@@ -29,5 +79,6 @@ export type Project = {
   heroImage?: string;
   gallery: string[];
   externalLinks?: ProjectLink[];
+  caseStudy?: ProjectCaseStudy;
   featured: boolean;
 };

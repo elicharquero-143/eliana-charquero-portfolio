@@ -61,6 +61,95 @@ export const projectBySlugQuery = groq`
     "heroImage": heroImage.asset->url,
     "gallery": gallery[].asset->url,
     externalLinks[]{label, labelEn, href},
+    caseStudy{
+      enabled,
+      context,
+      contextEn,
+      status,
+      statusEn,
+      problem{
+        intro,
+        introEn,
+        "media": media[]{
+          _key,
+          alt,
+          altEn,
+          caption,
+          captionEn,
+          "url": image.asset->url,
+          "width": image.asset->metadata.dimensions.width,
+          "height": image.asset->metadata.dimensions.height
+        }
+      },
+      research{
+        intro,
+        introEn,
+        "blocks": blocks[]{
+          _key,
+          title,
+          titleEn,
+          body,
+          bodyEn,
+          "media": media[]{
+            _key,
+            alt,
+            altEn,
+            caption,
+            captionEn,
+            "url": image.asset->url,
+            "width": image.asset->metadata.dimensions.width,
+            "height": image.asset->metadata.dimensions.height
+          }
+        }
+      },
+      decisions{
+        intro,
+        introEn,
+        "blocks": blocks[]{
+          _key,
+          title,
+          titleEn,
+          body,
+          bodyEn,
+          "media": media[]{
+            _key,
+            alt,
+            altEn,
+            caption,
+            captionEn,
+            "url": image.asset->url,
+            "width": image.asset->metadata.dimensions.width,
+            "height": image.asset->metadata.dimensions.height
+          }
+        }
+      },
+      solution{
+        intro,
+        introEn,
+        "blocks": blocks[]{
+          _key,
+          title,
+          titleEn,
+          body,
+          bodyEn,
+          "media": media[]{
+            _key,
+            alt,
+            altEn,
+            caption,
+            captionEn,
+            "url": image.asset->url,
+            "width": image.asset->metadata.dimensions.width,
+            "height": image.asset->metadata.dimensions.height
+          }
+        }
+      },
+      measuredResults[]{_key, text, textEn},
+      expectedImpact[]{_key, text, textEn},
+      learnings[]{_key, text, textEn},
+      limitation,
+      limitationEn
+    },
     featured,
     category->{title, titleEn, "slug": slug.current, description, descriptionEn}
   }

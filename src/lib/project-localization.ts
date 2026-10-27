@@ -1,6 +1,13 @@
 import { dictionaries } from "@/i18n/dictionaries";
 import type { Language } from "@/i18n/language-provider";
-import type { Project } from "@/types/project";
+import type {
+  Project,
+  ProjectCaseStudy,
+  ProjectResultItem,
+  ProjectStoryBlock,
+  ProjectStoryMedia,
+  ProjectStorySection,
+} from "@/types/project";
 
 const categoryTranslations: Record<string, string> = {
   "App de apoyo educativo": "Educational support app",
@@ -43,6 +50,86 @@ function localizedArray(
     : spanishValue;
 }
 
+function localizeStoryMedia(
+  media: ProjectStoryMedia[] | undefined,
+  language: Language,
+) {
+  return media?.map((item) => ({
+    ...item,
+    alt: localizedValue(language, item.alt ?? "", item.altEn),
+    caption: localizedValue(language, item.caption ?? "", item.captionEn),
+  }));
+}
+
+function localizeStoryBlocks(
+  blocks: ProjectStoryBlock[] | undefined,
+  language: Language,
+) {
+  return blocks?.map((block) => ({
+    ...block,
+    body: localizedValue(language, block.body ?? "", block.bodyEn),
+    media: localizeStoryMedia(block.media, language),
+    title: localizedValue(language, block.title ?? "", block.titleEn),
+  }));
+}
+
+function localizeStorySection(
+  section: ProjectStorySection | undefined,
+  language: Language,
+) {
+  if (!section) {
+    return undefined;
+  }
+
+  return {
+    ...section,
+    blocks: localizeStoryBlocks(section.blocks, language),
+    intro: localizedValue(language, section.intro ?? "", section.introEn),
+    media: localizeStoryMedia(section.media, language),
+  };
+}
+
+function localizeResultItems(
+  items: ProjectResultItem[] | undefined,
+  language: Language,
+) {
+  return items?.map((item) => ({
+    ...item,
+    text: localizedValue(language, item.text, item.textEn),
+  }));
+}
+
+function localizeCaseStudy(
+  caseStudy: ProjectCaseStudy | undefined,
+  language: Language,
+) {
+  if (!caseStudy) {
+    return undefined;
+  }
+
+  return {
+    ...caseStudy,
+    context: localizedValue(
+      language,
+      caseStudy.context ?? "",
+      caseStudy.contextEn,
+    ),
+    decisions: localizeStorySection(caseStudy.decisions, language),
+    expectedImpact: localizeResultItems(caseStudy.expectedImpact, language),
+    learnings: localizeResultItems(caseStudy.learnings, language),
+    limitation: localizedValue(
+      language,
+      caseStudy.limitation ?? "",
+      caseStudy.limitationEn,
+    ),
+    measuredResults: localizeResultItems(caseStudy.measuredResults, language),
+    problem: localizeStorySection(caseStudy.problem, language),
+    research: localizeStorySection(caseStudy.research, language),
+    solution: localizeStorySection(caseStudy.solution, language),
+    status: localizedValue(language, caseStudy.status ?? "", caseStudy.statusEn),
+  };
+}
+
 export function localizeProject(project: Project, language: Language): Project {
   const dictionaryFallback =
     language === "en"
@@ -53,6 +140,7 @@ export function localizeProject(project: Project, language: Language): Project {
 
   return {
     ...project,
+    caseStudy: localizeCaseStudy(project.caseStudy, language),
     category: {
       ...project.category,
       description: localizedValue(
