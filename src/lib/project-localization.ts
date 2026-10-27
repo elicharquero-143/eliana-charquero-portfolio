@@ -115,6 +115,11 @@ function localizeCaseStudy(
       caseStudy.contextEn,
     ),
     decisions: localizeStorySection(caseStudy.decisions, language),
+    decisionsTitle: localizedValue(
+      language,
+      caseStudy.decisionsTitle ?? "",
+      caseStudy.decisionsTitleEn,
+    ),
     expectedImpact: localizeResultItems(caseStudy.expectedImpact, language),
     learnings: localizeResultItems(caseStudy.learnings, language),
     limitation: localizedValue(
@@ -124,8 +129,28 @@ function localizeCaseStudy(
     ),
     measuredResults: localizeResultItems(caseStudy.measuredResults, language),
     problem: localizeStorySection(caseStudy.problem, language),
+    problemTitle: localizedValue(
+      language,
+      caseStudy.problemTitle ?? "",
+      caseStudy.problemTitleEn,
+    ),
     research: localizeStorySection(caseStudy.research, language),
+    researchTitle: localizedValue(
+      language,
+      caseStudy.researchTitle ?? "",
+      caseStudy.researchTitleEn,
+    ),
+    resultsTitle: localizedValue(
+      language,
+      caseStudy.resultsTitle ?? "",
+      caseStudy.resultsTitleEn,
+    ),
     solution: localizeStorySection(caseStudy.solution, language),
+    solutionTitle: localizedValue(
+      language,
+      caseStudy.solutionTitle ?? "",
+      caseStudy.solutionTitleEn,
+    ),
     status: localizedValue(language, caseStudy.status ?? "", caseStudy.statusEn),
   };
 }

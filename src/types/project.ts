@@ -52,6 +52,16 @@ export type ProjectCaseStudy = {
   contextEn?: string;
   status?: string;
   statusEn?: string;
+  problemTitle?: string;
+  problemTitleEn?: string;
+  researchTitle?: string;
+  researchTitleEn?: string;
+  decisionsTitle?: string;
+  decisionsTitleEn?: string;
+  solutionTitle?: string;
+  solutionTitleEn?: string;
+  resultsTitle?: string;
+  resultsTitleEn?: string;
   problem?: ProjectStorySection;
   research?: ProjectStorySection;
   decisions?: ProjectStorySection;

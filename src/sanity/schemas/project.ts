@@ -209,6 +209,56 @@ export const project = defineType({
           type: "string",
         }),
         defineField({
+          name: "problemTitle",
+          title: "Título de Problema",
+          type: "string",
+        }),
+        defineField({
+          name: "problemTitleEn",
+          title: "Título de Problema en inglés",
+          type: "string",
+        }),
+        defineField({
+          name: "researchTitle",
+          title: "Título de Investigación / Enfoque",
+          type: "string",
+        }),
+        defineField({
+          name: "researchTitleEn",
+          title: "Título de Investigación / Enfoque en inglés",
+          type: "string",
+        }),
+        defineField({
+          name: "decisionsTitle",
+          title: "Título de Decisiones",
+          type: "string",
+        }),
+        defineField({
+          name: "decisionsTitleEn",
+          title: "Título de Decisiones en inglés",
+          type: "string",
+        }),
+        defineField({
+          name: "solutionTitle",
+          title: "Título de Solución",
+          type: "string",
+        }),
+        defineField({
+          name: "solutionTitleEn",
+          title: "Título de Solución en inglés",
+          type: "string",
+        }),
+        defineField({
+          name: "resultsTitle",
+          title: "Título de Resultados",
+          type: "string",
+        }),
+        defineField({
+          name: "resultsTitleEn",
+          title: "Título de Resultados en inglés",
+          type: "string",
+        }),
+        defineField({
           name: "problem",
           title: "1. Problema",
           type: "object",

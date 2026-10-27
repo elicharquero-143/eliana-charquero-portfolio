@@ -324,49 +324,51 @@ export function ProjectCaseStudyContent({
     hasResults(caseStudy.learnings) ||
     hasText(caseStudy.limitation);
 
+  const narrativeSections = [
+    {
+      background: "bg-cream",
+      section: caseStudy.problem,
+      title: caseStudy.problemTitle || labels.problemTitle,
+    },
+    {
+      background: "bg-periwinkle/35",
+      section: caseStudy.research,
+      title: caseStudy.researchTitle || labels.researchTitle,
+    },
+    {
+      background: "bg-cream",
+      section: caseStudy.decisions,
+      title: caseStudy.decisionsTitle || labels.decisionsTitle,
+    },
+    {
+      background: "bg-periwinkle/20",
+      section: caseStudy.solution,
+      title: caseStudy.solutionTitle || labels.solutionTitle,
+    },
+  ].filter(({ section }) => hasSection(section));
+
   return (
     <>
-      <NarrativeSection
-        background="bg-cream"
-        index="01"
-        labels={labels}
-        onOpenImage={onOpenImage}
-        projectTitle={projectTitle}
-        section={caseStudy.problem}
-        title={labels.problemTitle}
-      />
-      <NarrativeSection
-        background="bg-periwinkle/35"
-        index="02"
-        labels={labels}
-        onOpenImage={onOpenImage}
-        projectTitle={projectTitle}
-        section={caseStudy.research}
-        title={labels.researchTitle}
-      />
-      <NarrativeSection
-        background="bg-cream"
-        index="03"
-        labels={labels}
-        onOpenImage={onOpenImage}
-        projectTitle={projectTitle}
-        section={caseStudy.decisions}
-        title={labels.decisionsTitle}
-      />
-      <NarrativeSection
-        background="bg-periwinkle/20"
-        index="04"
-        labels={labels}
-        onOpenImage={onOpenImage}
-        projectTitle={projectTitle}
-        section={caseStudy.solution}
-        title={labels.solutionTitle}
-      />
+      {narrativeSections.map(({ background, section, title }, index) => (
+        <NarrativeSection
+          background={background}
+          index={String(index + 1).padStart(2, "0")}
+          key={title}
+          labels={labels}
+          onOpenImage={onOpenImage}
+          projectTitle={projectTitle}
+          section={section}
+          title={title}
+        />
+      ))}
       {showResults ? (
         <section className="bg-cream px-5 py-16 md:px-[68px] md:py-[96px]">
           <div className="home-scale grid gap-10 lg:grid-cols-[minmax(260px,0.36fr)_minmax(0,0.64fr)] lg:gap-16">
             <Reveal>
-              <SectionHeading index="05" title={labels.resultsTitle} />
+              <SectionHeading
+                index={String(narrativeSections.length + 1).padStart(2, "0")}
+                title={caseStudy.resultsTitle || labels.resultsTitle}
+              />
             </Reveal>
             <Reveal className="grid gap-10 md:grid-cols-2">
               <ResultList
