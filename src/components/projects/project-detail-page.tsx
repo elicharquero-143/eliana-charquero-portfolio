@@ -51,18 +51,28 @@ export function ProjectDetailPage({ initialProject, slug }: ProjectDetailPagePro
   );
   const caseStudy = project?.caseStudy;
   const showCaseStudy = hasCaseStudyContent(caseStudy);
+  const caseStudyImages = useMemo(
+    () => (showCaseStudy ? getCaseStudyImages(caseStudy) : []),
+    [caseStudy, showCaseStudy],
+  );
   const galleryImages = useMemo(
-    () => (project?.gallery.length ? project.gallery : []),
-    [project],
+    () => {
+      const narrativeImageUrls = new Set(
+        caseStudyImages.map((item) => item.url),
+      );
+
+      return project?.gallery.length
+        ? project.gallery.filter((image) => !narrativeImageUrls.has(image))
+        : [];
+    },
+    [caseStudyImages, project],
   );
   const lightboxImages = useMemo(() => {
-    const caseStudyImages = showCaseStudy ? getCaseStudyImages(caseStudy) : [];
-
     return [
       ...caseStudyImages.map((item) => item.url),
       ...galleryImages,
     ].filter((image, index, images) => images.indexOf(image) === index);
-  }, [caseStudy, galleryImages, showCaseStudy]);
+  }, [caseStudyImages, galleryImages]);
   const [activeImageIndex, setActiveImageIndex] = useState<number | null>(null);
   const activeImage =
     activeImageIndex === null ? null : lightboxImages[activeImageIndex];
