@@ -46,6 +46,52 @@ export type ProjectResultItem = {
   textEn?: string;
 };
 
+export type ProjectAiProcessItem = {
+  _key?: string;
+  task?: string;
+  taskEn?: string;
+  tool?: string;
+  toolEn?: string;
+  function?: string;
+  functionEn?: string;
+  direction?: string;
+  directionEn?: string;
+  review?: string;
+  reviewEn?: string;
+  contribution?: string;
+  contributionEn?: string;
+};
+
+export type ProjectAiProcess = {
+  title?: string;
+  titleEn?: string;
+  intro?: string;
+  introEn?: string;
+  placement?: "research" | "decisions" | "solution";
+  items?: ProjectAiProcessItem[];
+  responsiblePractices?: ProjectResultItem[];
+};
+
+export type ProjectAiProduct = {
+  title?: string;
+  titleEn?: string;
+  need?: string;
+  needEn?: string;
+  dataNeeded?: string;
+  dataNeededEn?: string;
+  userControl?: string;
+  userControlEn?: string;
+  uncertaintyAndLimits?: string;
+  uncertaintyAndLimitsEn?: string;
+  conceptualScope?: string;
+  conceptualScopeEn?: string;
+  prototypedScope?: string;
+  prototypedScopeEn?: string;
+  implementedScope?: string;
+  implementedScopeEn?: string;
+  responsiblePractices?: ProjectResultItem[];
+};
+
 export type ProjectCaseStudy = {
   enabled?: boolean;
   context?: string;
@@ -66,7 +112,10 @@ export type ProjectCaseStudy = {
   research?: ProjectStorySection;
   decisions?: ProjectStorySection;
   solution?: ProjectStorySection;
+  aiProcess?: ProjectAiProcess;
+  aiProduct?: ProjectAiProduct;
   measuredResults?: ProjectResultItem[];
+  qualitativeObservations?: ProjectResultItem[];
   expectedImpact?: ProjectResultItem[];
   learnings?: ProjectResultItem[];
   limitation?: string;

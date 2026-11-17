@@ -109,6 +109,95 @@ function localizeCaseStudy(
 
   return {
     ...caseStudy,
+    aiProcess: caseStudy.aiProcess
+      ? {
+          ...caseStudy.aiProcess,
+          intro: localizedValue(
+            language,
+            caseStudy.aiProcess.intro ?? "",
+            caseStudy.aiProcess.introEn,
+          ),
+          items: caseStudy.aiProcess.items?.map((item) => ({
+            ...item,
+            contribution: localizedValue(
+              language,
+              item.contribution ?? "",
+              item.contributionEn,
+            ),
+            direction: localizedValue(
+              language,
+              item.direction ?? "",
+              item.directionEn,
+            ),
+            function: localizedValue(
+              language,
+              item.function ?? "",
+              item.functionEn,
+            ),
+            review: localizedValue(language, item.review ?? "", item.reviewEn),
+            task: localizedValue(language, item.task ?? "", item.taskEn),
+            tool: localizedValue(language, item.tool ?? "", item.toolEn),
+          })),
+          responsiblePractices: localizeResultItems(
+            caseStudy.aiProcess.responsiblePractices,
+            language,
+          ),
+          title: localizedValue(
+            language,
+            caseStudy.aiProcess.title ?? "",
+            caseStudy.aiProcess.titleEn,
+          ),
+        }
+      : undefined,
+    aiProduct: caseStudy.aiProduct
+      ? {
+          ...caseStudy.aiProduct,
+          conceptualScope: localizedValue(
+            language,
+            caseStudy.aiProduct.conceptualScope ?? "",
+            caseStudy.aiProduct.conceptualScopeEn,
+          ),
+          dataNeeded: localizedValue(
+            language,
+            caseStudy.aiProduct.dataNeeded ?? "",
+            caseStudy.aiProduct.dataNeededEn,
+          ),
+          implementedScope: localizedValue(
+            language,
+            caseStudy.aiProduct.implementedScope ?? "",
+            caseStudy.aiProduct.implementedScopeEn,
+          ),
+          need: localizedValue(
+            language,
+            caseStudy.aiProduct.need ?? "",
+            caseStudy.aiProduct.needEn,
+          ),
+          prototypedScope: localizedValue(
+            language,
+            caseStudy.aiProduct.prototypedScope ?? "",
+            caseStudy.aiProduct.prototypedScopeEn,
+          ),
+          responsiblePractices: localizeResultItems(
+            caseStudy.aiProduct.responsiblePractices,
+            language,
+          ),
+          title: localizedValue(
+            language,
+            caseStudy.aiProduct.title ?? "",
+            caseStudy.aiProduct.titleEn,
+          ),
+          uncertaintyAndLimits: localizedValue(
+            language,
+            caseStudy.aiProduct.uncertaintyAndLimits ?? "",
+            caseStudy.aiProduct.uncertaintyAndLimitsEn,
+          ),
+          userControl: localizedValue(
+            language,
+            caseStudy.aiProduct.userControl ?? "",
+            caseStudy.aiProduct.userControlEn,
+          ),
+        }
+      : undefined,
     context: localizedValue(
       language,
       caseStudy.context ?? "",
@@ -128,6 +217,10 @@ function localizeCaseStudy(
       caseStudy.limitationEn,
     ),
     measuredResults: localizeResultItems(caseStudy.measuredResults, language),
+    qualitativeObservations: localizeResultItems(
+      caseStudy.qualitativeObservations,
+      language,
+    ),
     problem: localizeStorySection(caseStudy.problem, language),
     problemTitle: localizedValue(
       language,

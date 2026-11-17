@@ -110,6 +110,27 @@ const resultItem = defineArrayMember({
   preview: { select: { title: "text", subtitle: "textEn" } },
 });
 
+const aiProcessItem = defineArrayMember({
+  name: "projectAiProcessItem",
+  title: "Uso de IA en el proceso",
+  type: "object",
+  fields: [
+    defineField({ name: "task", title: "Tarea que necesitaba resolver", type: "string" }),
+    defineField({ name: "taskEn", title: "Tarea en inglés", type: "string" }),
+    defineField({ name: "tool", title: "Herramienta utilizada", type: "string" }),
+    defineField({ name: "toolEn", title: "Herramienta en inglés", type: "string" }),
+    defineField({ name: "function", title: "Función utilizada", type: "text", rows: 3 }),
+    defineField({ name: "functionEn", title: "Función en inglés", type: "text", rows: 3 }),
+    defineField({ name: "direction", title: "Cómo orienté el trabajo", type: "text", rows: 3 }),
+    defineField({ name: "directionEn", title: "Orientación en inglés", type: "text", rows: 3 }),
+    defineField({ name: "review", title: "Qué revisé o corregí", type: "text", rows: 3 }),
+    defineField({ name: "reviewEn", title: "Revisión en inglés", type: "text", rows: 3 }),
+    defineField({ name: "contribution", title: "Aporte al proceso", type: "text", rows: 3 }),
+    defineField({ name: "contributionEn", title: "Aporte en inglés", type: "text", rows: 3 }),
+  ],
+  preview: { select: { title: "task", subtitle: "tool" } },
+});
+
 export const project = defineType({
   name: "project",
   title: "Trabajo / Proyecto",
@@ -364,10 +385,92 @@ export const project = defineType({
           ],
         }),
         defineField({
+          name: "aiProcess",
+          title: "IA utilizada en mi proceso de trabajo",
+          type: "object",
+          description:
+            "Completa este apartado solo si utilizaste IA. Si queda vacío, no aparecerá en la web.",
+          options: { collapsible: true, collapsed: true },
+          fields: [
+            defineField({ name: "title", title: "Título opcional", type: "string" }),
+            defineField({ name: "titleEn", title: "Título en inglés", type: "string" }),
+            defineField({ name: "intro", title: "Introducción breve", type: "text", rows: 4 }),
+            defineField({ name: "introEn", title: "Introducción en inglés", type: "text", rows: 4 }),
+            defineField({
+              name: "placement",
+              title: "Mostrar después de",
+              type: "string",
+              initialValue: "decisions",
+              options: {
+                list: [
+                  { title: "Investigación", value: "research" },
+                  { title: "Decisiones de diseño", value: "decisions" },
+                  { title: "Solución", value: "solution" },
+                ],
+                layout: "radio",
+              },
+            }),
+            defineField({
+              name: "items",
+              title: "Usos documentados",
+              type: "array",
+              of: [aiProcessItem],
+            }),
+            defineField({
+              name: "responsiblePractices",
+              title: "Prácticas de uso responsable confirmadas",
+              type: "array",
+              description:
+                "Incluye solo prácticas realmente aplicadas, como protección de datos, verificación o revisión de sesgos.",
+              of: [resultItem],
+            }),
+          ],
+        }),
+        defineField({
+          name: "aiProduct",
+          title: "IA propuesta como funcionalidad del producto",
+          type: "object",
+          description:
+            "Describe una funcionalidad del producto, distinguiendo claramente lo conceptual, prototipado e implementado.",
+          options: { collapsible: true, collapsed: true },
+          fields: [
+            defineField({ name: "title", title: "Título opcional", type: "string" }),
+            defineField({ name: "titleEn", title: "Título en inglés", type: "string" }),
+            defineField({ name: "need", title: "Necesidad que aborda", type: "text", rows: 4 }),
+            defineField({ name: "needEn", title: "Necesidad en inglés", type: "text", rows: 4 }),
+            defineField({ name: "dataNeeded", title: "Datos que necesitaría", type: "text", rows: 4 }),
+            defineField({ name: "dataNeededEn", title: "Datos en inglés", type: "text", rows: 4 }),
+            defineField({ name: "userControl", title: "Qué puede controlar la persona", type: "text", rows: 4 }),
+            defineField({ name: "userControlEn", title: "Control en inglés", type: "text", rows: 4 }),
+            defineField({ name: "uncertaintyAndLimits", title: "Incertidumbre y límites", type: "text", rows: 4 }),
+            defineField({ name: "uncertaintyAndLimitsEn", title: "Incertidumbre y límites en inglés", type: "text", rows: 4 }),
+            defineField({ name: "conceptualScope", title: "Qué quedó a nivel conceptual", type: "text", rows: 4 }),
+            defineField({ name: "conceptualScopeEn", title: "Alcance conceptual en inglés", type: "text", rows: 4 }),
+            defineField({ name: "prototypedScope", title: "Qué fue prototipado", type: "text", rows: 4 }),
+            defineField({ name: "prototypedScopeEn", title: "Alcance prototipado en inglés", type: "text", rows: 4 }),
+            defineField({ name: "implementedScope", title: "Qué fue implementado", type: "text", rows: 4 }),
+            defineField({ name: "implementedScopeEn", title: "Alcance implementado en inglés", type: "text", rows: 4 }),
+            defineField({
+              name: "responsiblePractices",
+              title: "Prácticas responsables previstas o aplicadas",
+              type: "array",
+              of: [resultItem],
+            }),
+          ],
+        }),
+        defineField({
           name: "measuredResults",
           title: "5. Resultados comprobados",
           type: "array",
           description: "Incluye solo resultados observados o medidos.",
+          of: [resultItem],
+        }),
+        defineField({
+          name: "qualitativeObservations",
+          title: "Observaciones cualitativas",
+          type: "array",
+          description:
+            "Hallazgos observados sin presentarlos como métricas o resultados medidos.",
           of: [resultItem],
         }),
         defineField({

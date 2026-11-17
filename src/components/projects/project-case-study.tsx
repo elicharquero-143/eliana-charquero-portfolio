@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion/reveal";
 import type {
+  ProjectAiProcess,
+  ProjectAiProduct,
   ProjectCaseStudy,
   ProjectResultItem,
   ProjectStoryBlock,
@@ -11,13 +13,30 @@ import type {
 } from "@/types/project";
 
 type CaseStudyLabels = {
+  aiContributionTitle: string;
+  aiControlTitle: string;
+  aiDataTitle: string;
+  aiDirectionTitle: string;
+  aiFunctionTitle: string;
+  aiLimitsTitle: string;
+  aiNeedTitle: string;
+  aiProcessTitle: string;
+  aiProductTitle: string;
+  aiReviewTitle: string;
+  aiTaskTitle: string;
+  aiToolTitle: string;
+  conceptualTitle: string;
   decisionsTitle: string;
   expectedImpactTitle: string;
+  implementedTitle: string;
   learningsTitle: string;
   limitationTitle: string;
   measuredResultsTitle: string;
   problemTitle: string;
+  prototypedTitle: string;
+  qualitativeObservationsTitle: string;
   researchTitle: string;
+  responsiblePracticesTitle: string;
   resultsTitle: string;
   solutionTitle: string;
   viewImage: string;
@@ -57,6 +76,39 @@ function hasResults(items?: ProjectResultItem[]) {
   return Boolean(items?.some((item) => hasText(item.text)));
 }
 
+function hasAiProcess(process?: ProjectAiProcess) {
+  return Boolean(
+    process &&
+      (hasText(process.intro) ||
+        process.items?.some((item) =>
+          [
+            item.task,
+            item.tool,
+            item.function,
+            item.direction,
+            item.review,
+            item.contribution,
+          ].some(hasText),
+        ) ||
+        hasResults(process.responsiblePractices)),
+  );
+}
+
+function hasAiProduct(product?: ProjectAiProduct) {
+  return Boolean(
+    product &&
+      ([
+          product.need,
+          product.dataNeeded,
+          product.userControl,
+          product.uncertaintyAndLimits,
+          product.conceptualScope,
+          product.prototypedScope,
+          product.implementedScope,
+        ].some(hasText) || hasResults(product.responsiblePractices)),
+  );
+}
+
 export function hasCaseStudyContent(caseStudy?: ProjectCaseStudy) {
   return Boolean(
     caseStudy?.enabled &&
@@ -66,10 +118,180 @@ export function hasCaseStudyContent(caseStudy?: ProjectCaseStudy) {
         hasSection(caseStudy.research) ||
         hasSection(caseStudy.decisions) ||
         hasSection(caseStudy.solution) ||
+        hasAiProcess(caseStudy.aiProcess) ||
+        hasAiProduct(caseStudy.aiProduct) ||
         hasResults(caseStudy.measuredResults) ||
+        hasResults(caseStudy.qualitativeObservations) ||
         hasResults(caseStudy.expectedImpact) ||
         hasResults(caseStudy.learnings) ||
         hasText(caseStudy.limitation)),
+  );
+}
+
+function AiDetail({ label, value }: { label: string; value?: string }) {
+  if (!hasText(value)) {
+    return null;
+  }
+
+  return (
+    <div>
+      <dt className="font-mono text-xs font-bold uppercase text-plum">{label}</dt>
+      <dd className="mt-2 whitespace-pre-line font-sans text-lg leading-8 text-ink/85">
+        {value}
+      </dd>
+    </div>
+  );
+}
+
+function AiProcessSection({
+  background,
+  index,
+  labels,
+  process,
+}: {
+  background: string;
+  index: string;
+  labels: CaseStudyLabels;
+  process: ProjectAiProcess;
+}) {
+  const items = process.items?.filter((item) =>
+    [item.task, item.tool, item.function, item.direction, item.review, item.contribution].some(
+      hasText,
+    ),
+  );
+
+  return (
+    <section className={`${background} px-5 py-16 md:px-[68px] md:py-[96px]`}>
+      <div className="home-scale grid gap-10 lg:grid-cols-[minmax(260px,0.36fr)_minmax(0,0.64fr)] lg:gap-16">
+        <Reveal>
+          <SectionHeading
+            index={index}
+            title={process.title || labels.aiProcessTitle}
+          />
+        </Reveal>
+        <div>
+          {hasText(process.intro) ? (
+            <Reveal>
+              <p className="max-w-[820px] whitespace-pre-line text-pretty font-sans text-xl leading-9 text-ink md:text-2xl md:leading-10">
+                {process.intro}
+              </p>
+            </Reveal>
+          ) : null}
+          {items?.length ? (
+            <Stagger className={`${hasText(process.intro) ? "mt-12" : ""} space-y-12`}>
+              {items.map((item, itemIndex) => (
+                <StaggerItem key={item._key ?? `${item.task}-${itemIndex}`}>
+                  <article className="border-t border-ink/15 pt-7">
+                    <div className="grid gap-6 md:grid-cols-[72px_minmax(0,1fr)]">
+                      <p className="font-mono text-sm text-muted">
+                        {String(itemIndex + 1).padStart(2, "0")}
+                      </p>
+                      <div>
+                        {hasText(item.task) ? (
+                          <h3 className="font-sans text-2xl font-bold leading-tight text-ink md:text-[30px]">
+                            {item.task}
+                          </h3>
+                        ) : null}
+                        <dl className="mt-6 grid gap-6 sm:grid-cols-2">
+                          <AiDetail label={labels.aiToolTitle} value={item.tool} />
+                          <AiDetail label={labels.aiFunctionTitle} value={item.function} />
+                          <AiDetail label={labels.aiDirectionTitle} value={item.direction} />
+                          <AiDetail label={labels.aiReviewTitle} value={item.review} />
+                          <AiDetail
+                            label={labels.aiContributionTitle}
+                            value={item.contribution}
+                          />
+                        </dl>
+                      </div>
+                    </div>
+                  </article>
+                </StaggerItem>
+              ))}
+            </Stagger>
+          ) : null}
+          {hasResults(process.responsiblePractices) ? (
+            <Reveal className={items?.length || hasText(process.intro) ? "mt-12" : ""}>
+              <ResultList
+                items={process.responsiblePractices}
+                title={labels.responsiblePracticesTitle}
+              />
+            </Reveal>
+          ) : null}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function AiProductSection({
+  background,
+  index,
+  labels,
+  product,
+}: {
+  background: string;
+  index: string;
+  labels: CaseStudyLabels;
+  product: ProjectAiProduct;
+}) {
+  const productDetails = [
+    { label: labels.aiNeedTitle, value: product.need },
+    { label: labels.aiDataTitle, value: product.dataNeeded },
+    { label: labels.aiControlTitle, value: product.userControl },
+    { label: labels.aiLimitsTitle, value: product.uncertaintyAndLimits },
+  ].filter((item) => hasText(item.value));
+  const maturity = [
+    { label: labels.conceptualTitle, value: product.conceptualScope },
+    { label: labels.prototypedTitle, value: product.prototypedScope },
+    { label: labels.implementedTitle, value: product.implementedScope },
+  ].filter((item) => hasText(item.value));
+
+  return (
+    <section className={`${background} px-5 py-16 md:px-[68px] md:py-[96px]`}>
+      <div className="home-scale grid gap-10 lg:grid-cols-[minmax(260px,0.36fr)_minmax(0,0.64fr)] lg:gap-16">
+        <Reveal>
+          <SectionHeading
+            index={index}
+            title={product.title || labels.aiProductTitle}
+          />
+        </Reveal>
+        <div>
+          {productDetails.length ? (
+            <Reveal>
+              <dl className="grid gap-8 border-t border-ink/15 pt-7 md:grid-cols-2">
+                {productDetails.map((item) => (
+                  <AiDetail key={item.label} label={item.label} value={item.value} />
+                ))}
+              </dl>
+            </Reveal>
+          ) : null}
+          {maturity.length ? (
+            <Stagger className={`${productDetails.length ? "mt-12" : ""} grid gap-5 md:grid-cols-3`}>
+              {maturity.map((item) => (
+                <StaggerItem key={item.label}>
+                  <article className="h-full rounded-lg border border-ink/15 bg-cream/70 p-6">
+                    <h3 className="font-mono text-xs font-bold uppercase text-plum">
+                      {item.label}
+                    </h3>
+                    <p className="mt-4 whitespace-pre-line font-sans text-lg leading-8 text-ink/85">
+                      {item.value}
+                    </p>
+                  </article>
+                </StaggerItem>
+              ))}
+            </Stagger>
+          ) : null}
+          {hasResults(product.responsiblePractices) ? (
+            <Reveal className={productDetails.length || maturity.length ? "mt-12" : ""}>
+              <ResultList
+                items={product.responsiblePractices}
+                title={labels.responsiblePracticesTitle}
+              />
+            </Reveal>
+          ) : null}
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -320,53 +542,121 @@ export function ProjectCaseStudyContent({
 }: ProjectCaseStudyContentProps) {
   const showResults =
     hasResults(caseStudy.measuredResults) ||
+    hasResults(caseStudy.qualitativeObservations) ||
     hasResults(caseStudy.expectedImpact) ||
     hasResults(caseStudy.learnings) ||
     hasText(caseStudy.limitation);
 
   const narrativeSections = [
     {
-      background: "bg-cream",
+      stage: "problem" as const,
       section: caseStudy.problem,
       title: caseStudy.problemTitle || labels.problemTitle,
     },
     {
-      background: "bg-periwinkle/35",
+      stage: "research" as const,
       section: caseStudy.research,
       title: caseStudy.researchTitle || labels.researchTitle,
     },
     {
-      background: "bg-cream",
+      stage: "decisions" as const,
       section: caseStudy.decisions,
       title: caseStudy.decisionsTitle || labels.decisionsTitle,
     },
     {
-      background: "bg-periwinkle/20",
+      stage: "solution" as const,
       section: caseStudy.solution,
       title: caseStudy.solutionTitle || labels.solutionTitle,
     },
   ].filter(({ section }) => hasSection(section));
 
+  type DisplaySection =
+    | { kind: "story"; section: ProjectStorySection; title: string }
+    | { kind: "aiProcess"; process: ProjectAiProcess }
+    | { kind: "aiProduct"; product: ProjectAiProduct };
+
+  const displaySections: DisplaySection[] = [];
+  const aiPlacement = caseStudy.aiProcess?.placement ?? "decisions";
+  let aiProcessAdded = false;
+  let aiProductAdded = false;
+
+  narrativeSections.forEach(({ section, stage, title }) => {
+    if (section) {
+      displaySections.push({ kind: "story", section, title });
+    }
+
+    if (
+      stage === aiPlacement &&
+      caseStudy.aiProcess &&
+      hasAiProcess(caseStudy.aiProcess)
+    ) {
+      displaySections.push({ kind: "aiProcess", process: caseStudy.aiProcess });
+      aiProcessAdded = true;
+    }
+
+    if (stage === "solution" && caseStudy.aiProduct && hasAiProduct(caseStudy.aiProduct)) {
+      displaySections.push({ kind: "aiProduct", product: caseStudy.aiProduct });
+      aiProductAdded = true;
+    }
+  });
+
+  if (!aiProcessAdded && caseStudy.aiProcess && hasAiProcess(caseStudy.aiProcess)) {
+    displaySections.push({ kind: "aiProcess", process: caseStudy.aiProcess });
+  }
+
+  if (!aiProductAdded && caseStudy.aiProduct && hasAiProduct(caseStudy.aiProduct)) {
+    displaySections.push({ kind: "aiProduct", product: caseStudy.aiProduct });
+  }
+
   return (
     <>
-      {narrativeSections.map(({ background, section, title }, index) => (
-        <NarrativeSection
-          background={background}
-          index={String(index + 1).padStart(2, "0")}
-          key={title}
-          labels={labels}
-          onOpenImage={onOpenImage}
-          projectTitle={projectTitle}
-          section={section}
-          title={title}
-        />
-      ))}
+      {displaySections.map((item, index) => {
+        const background = index % 2 === 0 ? "bg-cream" : "bg-periwinkle/25";
+        const sectionIndex = String(index + 1).padStart(2, "0");
+
+        if (item.kind === "aiProcess") {
+          return (
+            <AiProcessSection
+              background={background}
+              index={sectionIndex}
+              key="ai-process"
+              labels={labels}
+              process={item.process}
+            />
+          );
+        }
+
+        if (item.kind === "aiProduct") {
+          return (
+            <AiProductSection
+              background={background}
+              index={sectionIndex}
+              key="ai-product"
+              labels={labels}
+              product={item.product}
+            />
+          );
+        }
+
+        return (
+          <NarrativeSection
+            background={background}
+            index={sectionIndex}
+            key={item.title}
+            labels={labels}
+            onOpenImage={onOpenImage}
+            projectTitle={projectTitle}
+            section={item.section}
+            title={item.title}
+          />
+        );
+      })}
       {showResults ? (
         <section className="bg-cream px-5 py-16 md:px-[68px] md:py-[96px]">
           <div className="home-scale grid gap-10 lg:grid-cols-[minmax(260px,0.36fr)_minmax(0,0.64fr)] lg:gap-16">
             <Reveal>
               <SectionHeading
-                index={String(narrativeSections.length + 1).padStart(2, "0")}
+                index={String(displaySections.length + 1).padStart(2, "0")}
                 title={caseStudy.resultsTitle || labels.resultsTitle}
               />
             </Reveal>
@@ -374,6 +664,10 @@ export function ProjectCaseStudyContent({
               <ResultList
                 items={caseStudy.measuredResults}
                 title={labels.measuredResultsTitle}
+              />
+              <ResultList
+                items={caseStudy.qualitativeObservations}
+                title={labels.qualitativeObservationsTitle}
               />
               <ResultList
                 items={caseStudy.expectedImpact}
